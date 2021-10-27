@@ -8,7 +8,7 @@ set(CMAKE_C_STANDARD 99)
 
 set(PROJECT_FILES
         drivers/Inc/stm32f407xx.h
-        main.c
+        Src/main.c
         stm32_startup.c
         )
 
