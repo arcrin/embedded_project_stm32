@@ -8,11 +8,7 @@ set(CMAKE_C_STANDARD 99)
 
 set(PROJECT_FILES
         drivers/Inc/stm32f407xx.h
-        drivers/Inc/stm32f407xx_gpio_driver.h
-        drivers/Src/stm32f407xx_gpio_driver.c
-
-        Src/002led_button.c
-
+        main.c
         stm32_startup.c
         )
 
