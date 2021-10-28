@@ -108,4 +108,42 @@ typedef struct {
 
 #define RCC         ((RCC_RegDef_t*)RCC_BASEADDR)
 
+
+/*
+ * GPIO peripheral clock enable macros
+ */
+
+#define GPIOA_PCLK_EN()         (RCC->AHB1ENR |= (1 << 0))
+#define GPIOB_PCLK_EN()         (RCC->AHB1ENR |= (1 << 1))
+#define GPIOC_PCLK_EN()         (RCC->AHB1ENR |= (1 << 2))
+#define GPIOD_PCLK_EN()         (RCC->AHB1ENR |= (1 << 3))
+#define GPIOE_PCLK_EN()         (RCC->AHB1ENR |= (1 << 4))
+#define GPIOF_PCLK_EN()         (RCC->AHB1ENR |= (1 << 5))
+#define GPIOG_PCLK_EN()         (RCC->AHB1ENR |= (1 << 6))
+#define GPIOH_PCLK_EN()         (RCC->AHB1ENR |= (1 << 7))
+#define GPIOI_PCLK_EN()         (RCC->AHB1ENR |= (1 << 8))
+
+
+/*
+ * GPIO peripheral clock disable
+ */
+#define GPIOA_PCLK_DI()         (RCC->AHB1ENR &= ~(1 << 0))
+#define GPIOB_PCLK_DI()         (RCC->AHB1ENR &= ~(1 << 1))
+#define GPIOC_PCLK_DI()         (RCC->AHB1ENR &= ~(1 << 2))
+#define GPIOD_PCLK_DI()         (RCC->AHB1ENR &= ~(1 << 3))
+#define GPIOE_PCLK_DI()         (RCC->AHB1ENR &= ~(1 << 4))
+#define GPIOF_PCLK_DI()         (RCC->AHB1ENR &= ~(1 << 5))
+#define GPIOG_PCLK_DI()         (RCC->AHB1ENR &= ~(1 << 6))
+#define GPIOH_PCLK_DI()         (RCC->AHB1ENR &= ~(1 << 7))
+#define GPIOI_PCLK_DI()         (RCC->AHB1ENR &= ~(1 << 8))
+
+
+// generic macros
+#define ENABLE              1
+#define DISABLE             0
+#define SET                 ENABLE
+#define RESET               DISABLE
+#define GPIO_PIN_SET        SET
+#define GPIO_PIN_RESET      RESET
+
 #endif //MCU1_STM32F407XX_H
