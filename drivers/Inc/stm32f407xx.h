@@ -27,7 +27,6 @@
 #define AHB1PERIPH_BASEADDR     0x40020000U
 #define AHB2PERIPH_BASEADDR     0x50000000U
 
-
 /*
  * Peripheral base addresses on AHB1 bus
  *
@@ -41,6 +40,9 @@
 #define GPIOG_BASEADDR      (AHB1PERIPH_BASE + 0x1800)
 #define GPIOH_BASEADDR      (AHB1PERIPH_BASE + 0x1C00)
 #define GPIOI_BASEADDR      (AHB1PERIPH_BASE + 0x2000)
+
+#define RCC_BASEADDR        (AHB1PERIPH_BASE + 0x3800)
+
 
 /*
  * register structure definition for GPIO
@@ -58,6 +60,39 @@ typedef struct
     __vo uint32_t AFR[2];
 }GPIO_RegDef_t;
 
+typedef struct {
+    __vo uint32_t CR;
+    __vo uint32_t PLLCFGR;
+    __vo uint32_t CFGR;
+    __vo uint32_t CIR;
+    __vo uint32_t AHB1RSTR;
+    __vo uint32_t AHB2RSTR;
+    __vo uint32_t AHB3RSTR;
+    __vo uint32_t RESERVE1;
+    __vo uint32_t APB1RSTR;
+    __vo uint32_t APB2RSTR;
+    __vo uint32_t RESERVE2[2];
+    __vo uint32_t AHB1ENR;
+    __vo uint32_t AHB2ENR;
+    __vo uint32_t AHB3ENR;
+    __vo uint32_t RESERVE3;
+    __vo uint32_t APB1ENR;
+    __vo uint32_t APB2ENR;
+    __vo uint32_t RESERVE4[2];
+    __vo uint32_t AHB1LPENR;
+    __vo uint32_t AHB2LPENR;
+    __vo uint32_t AHB3LPENR;
+    __vo uint32_t RESERVE5;
+    __vo uint32_t APB1LPENR;
+    __vo uint32_t APB2LPENR;
+    __vo uint32_t RESERVE6[2];
+    __vo uint32_t BDCR;
+    __vo uint32_t CSR;
+    __vo uint32_t RESERVE7[2];
+    __vo uint32_t SSCGR;
+    __vo uint32_t PLLI2SCFGR;
+}RCC_RegDef_t;
+
 /*
  * Peripheral definitions
  */
@@ -70,5 +105,7 @@ typedef struct
 #define GPIOG       ((GPIO_Regdef_t*)GPIOG_BASEADDR)
 #define GPIOH       ((GPIO_Regdef_t*)GPIOH_BASEADDR)
 #define GPIOI       ((GPIO_Regdef_t*)GPIOI_BASEADDR)
+
+#define RCC         ((RCC_RegDef_t*)RCC_BASEADDR)
 
 #endif //MCU1_STM32F407XX_H
