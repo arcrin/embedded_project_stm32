@@ -1,0 +1,1 @@
+-s C:/Project/interface/interface/OpenOCD/common/scripts -s C:/Project/interface/interface/OpenOCD -f swd_ft.cfg -c "ftdi_channel 0; transport select swd" -f target/stm32f4x.cfg -c "adapter speed 1000; init; reset init"
