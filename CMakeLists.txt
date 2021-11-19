@@ -9,8 +9,8 @@ set(CMAKE_C_STANDARD 99)
 set(PROJECT_FILES
         drivers/Inc/stm32f407xx.h
         drivers/Inc/stm32f407xx_gpio.h
-        drivers/Src/stm32f407xx_gpio.c
-        Src/main.c
+        drivers/Src/stm32f407xx_gpio.cpp
+        Src/main.cpp
         stm32_startup.c
         )
 
