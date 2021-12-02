@@ -6,6 +6,14 @@
 
 #ifndef MCU1_STM32F407XX_H
 #define MCU1_STM32F407XX_H
+/*
+ * Base memory address
+ */
+#define FLASH_BASEADDR      0x08000000U
+#define SRAM1_BASEADDR      0x20000000U
+#define SRAM                SRAM1_BASEADDR
+#define SRAM2_BASEADDR      (SRAM1_BASEADDR + 0x0001c000)
+#define ROM_BASEADDR        0x1FFF0000U  // System memory
 
 /*
  * Peripheral bus base addresses
