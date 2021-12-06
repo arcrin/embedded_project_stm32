@@ -7,7 +7,6 @@
 
 
 int main(void) {
-    while(1) {
-
-    }
+    pGPIO_RegDef_t temp = GPIOA;
+    temp->ODR;
 }
