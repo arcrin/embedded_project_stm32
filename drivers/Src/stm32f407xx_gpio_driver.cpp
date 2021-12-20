@@ -158,7 +158,10 @@ void GPIO_DeInit(pGPIO_RegDef_t pGpioRegDef){
 /*
  * Data read and write
  */
-uint8_t GPIO_ReadFromInputPin(pGPIO_RegDef_t GPIOx, uint8_t PinNumber);
+uint8_t GPIO_ReadFromInputPin(pGPIO_RegDef_t GPIOx, uint8_t PinNumber){
+    pGPIO_RegDef_t ->
+}
+
 uint16_t GPIO_ReadFromInputPortr(pGPIO_RegDef_t GPIOx);
 void GPIO_WriteOutputPin(pGPIO_RegDef_t GPIOx, uint8_t PinNumber, uint8_t value);
 void GPIO_WriteOutputPort(pGPIO_RegDef_t GPIOx, uint16_t value);
