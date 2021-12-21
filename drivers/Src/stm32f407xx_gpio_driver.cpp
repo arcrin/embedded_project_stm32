@@ -159,7 +159,9 @@ void GPIO_DeInit(pGPIO_RegDef_t pGpioRegDef){
  * Data read and write
  */
 uint8_t GPIO_ReadFromInputPin(pGPIO_RegDef_t GPIOx, uint8_t PinNumber){
-    pGPIO_RegDef_t ->
+    uint8_t value;
+    value = (GPIOx->IDR & (1 << PinNumber)) >> PinNumber;
+    return value;
 }
 
 uint16_t GPIO_ReadFromInputPortr(pGPIO_RegDef_t GPIOx);

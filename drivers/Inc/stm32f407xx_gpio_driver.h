@@ -8,7 +8,7 @@
  */
 
 #include "stm32f407xx.h"
-typedef struct {
+typedef struct { // haven't seen this being used in pointer form, my guess is that there is no need to alter the value of this struct
     uint8_t GPIO_PinNumber;
     uint8_t GPIO_PinMode;       // Possible modes @GPIO_PIN_MODES
     uint8_t GPIO_PinSpeed;
