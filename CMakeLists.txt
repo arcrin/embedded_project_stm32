@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.15.0)
 
 project(mcu1)
 
-enable_language(C ASM)
+enable_language(C ASM CXX)
 
 set(CMAKE_C_STANDARD 99)
 
