@@ -25,68 +25,68 @@ void GPIO_PeriClockControl(pGPIO_RegDef_t pGPIOx,uint8_t EnorDi){
             GPIOA_PCLK_EN();
         }
         if(pGPIOx == GPIOB) {
-            GPIOA_PCLK_EN();
+            GPIOB_PCLK_EN();
         }
         if(pGPIOx == GPIOC) {
-            GPIOA_PCLK_EN();
+            GPIOC_PCLK_EN();
         }
         if(pGPIOx == GPIOD) {
-            GPIOA_PCLK_EN();
+            GPIOD_PCLK_EN();
         }
         if(pGPIOx == GPIOE) {
-            GPIOA_PCLK_EN();
+            GPIOE_PCLK_EN();
         }
         if(pGPIOx == GPIOF) {
-            GPIOA_PCLK_EN();
+            GPIOF_PCLK_EN();
         }
         if(pGPIOx == GPIOG) {
-            GPIOA_PCLK_EN();
+            GPIOG_PCLK_EN();
         }
         if(pGPIOx == GPIOH) {
-            GPIOA_PCLK_EN();
+            GPIOH_PCLK_EN();
         }
         if(pGPIOx == GPIOI) {
-            GPIOA_PCLK_EN();
+            GPIOI_PCLK_EN();
         }
         if(pGPIOx == GPIOJ) {
-            GPIOA_PCLK_EN();
+            GPIOJ_PCLK_EN();
         }
         if(pGPIOx == GPIOK) {
-            GPIOA_PCLK_EN();
+            GPIOK_PCLK_EN();
         }
     } else if (EnorDi == DISABLE) {
-        if (pGPIOx == GPIOA) {
+        if(pGPIOx == GPIOA) {
             GPIOA_PCLK_DI();
         }
-        if (pGPIOx == GPIOB) {
-            GPIOA_PCLK_DI();
+        if(pGPIOx == GPIOB) {
+            GPIOB_PCLK_DI();
         }
-        if (pGPIOx == GPIOC) {
-            GPIOA_PCLK_DI();
+        if(pGPIOx == GPIOC) {
+            GPIOC_PCLK_DI();
         }
-        if (pGPIOx == GPIOD) {
-            GPIOA_PCLK_DI();
+        if(pGPIOx == GPIOD) {
+            GPIOD_PCLK_DI();
         }
-        if (pGPIOx == GPIOE) {
-            GPIOA_PCLK_DI();
+        if(pGPIOx == GPIOE) {
+            GPIOE_PCLK_DI();
         }
-        if (pGPIOx == GPIOF) {
-            GPIOA_PCLK_DI();
+        if(pGPIOx == GPIOF) {
+            GPIOF_PCLK_DI();
         }
-        if (pGPIOx == GPIOG) {
-            GPIOA_PCLK_DI();
+        if(pGPIOx == GPIOG) {
+            GPIOG_PCLK_DI();
         }
-        if (pGPIOx == GPIOH) {
-            GPIOA_PCLK_DI();
+        if(pGPIOx == GPIOH) {
+            GPIOH_PCLK_DI();
         }
-        if (pGPIOx == GPIOI) {
-            GPIOA_PCLK_DI();
+        if(pGPIOx == GPIOI) {
+            GPIOI_PCLK_DI();
         }
-        if (pGPIOx == GPIOJ) {
-            GPIOA_PCLK_DI();
+        if(pGPIOx == GPIOJ) {
+            GPIOJ_PCLK_DI();
         }
-        if (pGPIOx == GPIOK) {
-            GPIOA_PCLK_DI();
+        if(pGPIOx == GPIOK) {
+            GPIOK_PCLK_DI();
         }
     }
 }

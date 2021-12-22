@@ -9,12 +9,12 @@
 
 #include "stm32f407xx.h"
 typedef struct { // haven't seen this being used in pointer form, my guess is that there is no need to alter the value of this struct
-    uint8_t GPIO_PinNumber;
-    uint8_t GPIO_PinMode;           // Possible modes @GPIO_PIN_MODES
-    uint8_t GPIO_PinSpeed;          // Possible modes @GPIO_PIN_SPEED
-    uint8_t GPIO_PinPuPdControl;    // @GPIO_PIN_PUPDTYPE
-    uint8_t GPIO_PinOPType;         // @GPIO_PIN_OTYPE
-    uint8_t GPIO_PinAltFunMode;
+    _vo uint8_t GPIO_PinNumber;
+    _vo uint8_t GPIO_PinMode;           // Possible modes @GPIO_PIN_MODES
+    _vo uint8_t GPIO_PinSpeed;          // Possible modes @GPIO_PIN_SPEED
+    _vo uint8_t GPIO_PinPuPdControl;    // @GPIO_PIN_PUPDTYPE
+    _vo uint8_t GPIO_PinOPType;         // @GPIO_PIN_OTYPE
+    _vo uint8_t GPIO_PinAltFunMode;
 }GPIO_PinConfig_t;
 
 typedef struct {

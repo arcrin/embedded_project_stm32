@@ -8,6 +8,8 @@
 
 int main(void) {
     pGPIO_Handle_t gpio_handle;
+    GPIO_Handle_t temp;
+    gpio_handle = &temp;
     gpio_handle->pGPIOx = GPIOD;
     gpio_handle->GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_12;
     gpio_handle->GPIO_PinConfig.GPIO_PinMode = GPIO_OUT_MODE;
