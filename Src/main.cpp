@@ -6,19 +6,17 @@
 #include <cstdint>
 
 
-int main(void) {
-    pGPIO_Handle_t gpio_handle;
-    GPIO_Handle_t temp;
-    gpio_handle = &temp;
-    gpio_handle->pGPIOx = GPIOD;
-    gpio_handle->GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_12;
-    gpio_handle->GPIO_PinConfig.GPIO_PinMode = GPIO_OUT_MODE;
-    gpio_handle->GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_PP;
-    gpio_handle->GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_HIGH;
-    gpio_handle->GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD; // pin output type is already push-pull, no need for pu/pd resistors
+int main() {
+    GPIO_Handle_t gpio_handle;
+    gpio_handle.pGPIOx = GPIOD;
+    gpio_handle.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_12;
+    gpio_handle.GPIO_PinConfig.GPIO_PinMode = GPIO_OUT_MODE;
+    gpio_handle.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_PP;
+    gpio_handle.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_HIGH;
+    gpio_handle.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD; // pin output type is already push-pull, no need for pu/pd resistors
 
-    GPIO_PeriClockControl(gpio_handle->pGPIOx, ENABLE);
-    GPIO_Init(gpio_handle);
+    GPIO_PeriClockControl(gpio_handle.pGPIOx, ENABLE);
+    GPIO_Init(&gpio_handle);
 //    GPIO_ToggleOutputPin(gpio_handle->pGPIOx, GPIO_PIN_NO_12);
-    GPIO_WriteOutputPin(gpio_handle->pGPIOx, GPIO_PIN_NO_12, GPIO_PIN_SET);
+    GPIO_WriteOutputPin(gpio_handle.pGPIOx, GPIO_PIN_NO_12, GPIO_PIN_RESET);
 }
