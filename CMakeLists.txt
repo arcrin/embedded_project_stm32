@@ -2,14 +2,17 @@ cmake_minimum_required(VERSION 3.15.0)
 
 project(mcu1)
 
-enable_language(C ASM CXX)
+enable_language(C)
 
 set(CMAKE_C_STANDARD 99)
 
 set(PROJECT_FILES
         drivers/Inc/stm32f407xx.h
+        drivers/Inc/stm32f407xx_gpio_driver.h
         drivers/Src/stm32f407xx_gpio_driver.cpp
+
         Src/main.cpp
+
         stm32_startup.c
         )
 
@@ -30,6 +33,7 @@ target_compile_options(${EXECUTABLE} PRIVATE
         -mthumb
         -mfloat-abi=soft
         -Wall
+#        -fno-exceptions
         $<$<CONFIG:Debug>:-Og>
         )
 

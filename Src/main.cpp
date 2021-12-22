@@ -7,7 +7,7 @@
 
 
 int main(void) {
-    pGPIO_Handle_t gpio_handle{};
+    pGPIO_Handle_t gpio_handle;
     gpio_handle->pGPIOx = GPIOD;
     gpio_handle->GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_12;
     gpio_handle->GPIO_PinConfig.GPIO_PinMode = GPIO_OUT_MODE;
@@ -17,5 +17,6 @@ int main(void) {
 
     GPIO_PeriClockControl(gpio_handle->pGPIOx, ENABLE);
     GPIO_Init(gpio_handle);
-    GPIO_ToggleOutputPin(gpio_handle->pGPIOx, GPIO_PIN_NO_12);
+//    GPIO_ToggleOutputPin(gpio_handle->pGPIOx, GPIO_PIN_NO_12);
+    GPIO_WriteOutputPin(gpio_handle->pGPIOx, GPIO_PIN_NO_12, GPIO_PIN_SET);
 }
