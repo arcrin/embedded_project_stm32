@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.15.0)
 
 project(mcu1)
 
-enable_language(C)
+enable_language(C CXX)
 
 set(CMAKE_C_STANDARD 99)
 
@@ -11,7 +11,7 @@ set(PROJECT_FILES
         drivers/Inc/stm32f407xx_gpio_driver.h
         drivers/Src/stm32f407xx_gpio_driver.cpp
 
-        Src/main.cpp
+        Src/exp3_button_led_control.cpp
 
         stm32_startup.c
         )
@@ -34,7 +34,7 @@ target_compile_options(${EXECUTABLE} PRIVATE
         -mfloat-abi=soft
         -Wall
 #        -fno-exceptions
-        $<$<CONFIG:Debug>:-Og>
+        $<$<CONFIG:Debug>:-o0>
         )
 
 target_link_options(${EXECUTABLE} PRIVATE
