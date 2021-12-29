@@ -10,10 +10,10 @@ set(PROJECT_FILES
         drivers/Inc/stm32f407xx.h
         drivers/Inc/stm32f407xx_gpio_driver.h
         drivers/Src/stm32f407xx_gpio_driver.cpp
+        stm32_startup.c
 
         Src/exp3_button_led_control.cpp
 
-        stm32_startup.c
         )
 
 set(EXECUTABLE ${PROJECT_NAME}.elf)
@@ -33,12 +33,13 @@ target_compile_options(${EXECUTABLE} PRIVATE
         -mthumb
         -mfloat-abi=soft
         -Wall
-#        -fno-exceptions
+        -fno-exceptions
         $<$<CONFIG:Debug>:-o0>
         )
 
 target_link_options(${EXECUTABLE} PRIVATE
         -T ${CMAKE_SOURCE_DIR}/stm32_ls.ld
+#        -nostdlib
         -mcpu=${MACH}
         -mthumb
         -mfloat-abi=soft

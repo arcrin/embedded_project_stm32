@@ -30,7 +30,7 @@ int main() {
     b1_gpio_handle.GPIO_PinConfig.GPIO_PinMode = GPIO_IN_MODE;
     b1_gpio_handle.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_HIGH;
     b1_gpio_handle.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD;
-//    GPIO_PeriClockControl(GPIOA, ENABLE);
+    GPIO_PeriClockControl(GPIOA, ENABLE);
     GPIO_Init(&b1_gpio_handle);
 //
 //    while (1) {
