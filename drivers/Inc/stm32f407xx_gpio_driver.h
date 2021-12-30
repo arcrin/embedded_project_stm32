@@ -1,27 +1,31 @@
 //
-// Created by andy- on 2021-12-05.
+// Created by wbai on 12/29/2021.
 //
 
-/*
- * this file contains driver specific data, such as:
- * GPIO handle and configuration structures that can be used by user application
- */
+#ifndef MCU1_STM32F407XX_GPIO_DRIVER_H
+#define MCU1_STM32F407XX_GPIO_DRIVER_H
 
 #include "stm32f407xx.h"
-typedef struct { // haven't seen this being used in pointer form, my guess is that there is no need to alter the value of this struct
-    _vo uint8_t GPIO_PinNumber;
-    _vo uint8_t GPIO_PinMode;           // Possible modes @GPIO_PIN_MODES
-    _vo uint8_t GPIO_PinSpeed;          // Possible modes @GPIO_PIN_SPEED
-    _vo uint8_t GPIO_PinPuPdControl;    // @GPIO_PIN_PUPDTYPE
-    _vo uint8_t GPIO_PinOPType;         // @GPIO_PIN_OTYPE
-    _vo uint8_t GPIO_PinAltFunMode;
+
+/*
+ * Handle structure for GPIO pin
+ */
+
+typedef struct{
+    uint8_t GPIO_PinNumber;
+    uint8_t GPIO_PinMode;	/*!<possible values from @GPIO_PIN_MODES>*/
+    uint8_t GPIO_PinSpeed;
+    uint8_t GPIO_PinPuPdControl;
+    uint8_t GPIO_PinOPType;
+    uint8_t GPIO_PinAltFunMode;
 }GPIO_PinConfig_t;
 
 typedef struct {
     //pointer to hold the base address of the GPIO peripheral
-    pGPIO_RegDef_t pGPIOx;              // holds the base address of the GPIO port to which the pin belongs
+    GPIO_RegDef_t *pGPIOx;              // holds the base address of the GPIO port to which the pin belongs
     GPIO_PinConfig_t GPIO_PinConfig;     // holds GPIO pin configuration settings
 }GPIO_Handle_t, *pGPIO_Handle_t;
+
 
 /*
  * GPIO PIN definition
@@ -49,7 +53,7 @@ typedef struct {
  */
 #define GPIO_IN_MODE        0
 #define GPIO_OUT_MODE       1
-#define GPIO_ALTFn_MODE     2
+#define GPIO_ALTFN_MODE     2
 #define GPIO_ANALOG_MODE    3
 #define GPIO_IT_FT_MODE     4   // Interrupt mode falling edge trigger
 #define GPIO_IT_RT_MODE     5   // Interrupt mode rising edge trigger
@@ -76,36 +80,15 @@ typedef struct {
 #define GPIO_PIN_PU         1
 #define GPIO_PIN_PD         2
 
-/*******************************************************************************
- * APIs supported by this driver
- *******************************************************************************/
+void GPIO_PeriClockControl(GPIO_RegDef_t *pGPIO, uint8_t EnorDi);
 
-/*
- * Peripheral clock setup
- */
-void GPIO_PeriClockControl(pGPIO_RegDef_t pGPIOx,uint8_t ENorDi);
+void GPIO_Init(GPIO_Handle_t *pGPIOHandle);
+void GPIODeInit(GPIO_RegDef_t *pGPIOx);
 
-/*
- * Init and De-init
- */
-void GPIO_Init(pGPIO_Handle_t pGPIOHandle);
-void GPIO_DeInit(pGPIO_RegDef_t pGpioRegDef);
+uint8_t GPIO_ReadFromInputPin(GPIO_RegDef_t *pGPIOx, uint8_t PinNumber);
+uint16_t GPIO_ReadFromInputPort(GPIO_RegDef_t *pGPIOx);
+void GPIO_WriteToOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t PinNumber, uint8_t Value);
+void GPIO_WriteToOutputPort(GPIO_RegDef_t *pGPIOx, uint16_t Value);
+void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t PinNumber);
 
-/*
- * Data read and write
- */
-uint8_t GPIO_ReadFromInputPin(pGPIO_RegDef_t GPIOx, uint8_t PinNumber);
-uint16_t GPIO_ReadFromInputPortr(pGPIO_RegDef_t GPIOx);
-void GPIO_WriteOutputPin(pGPIO_RegDef_t pGPIOx, uint8_t PinNumber, uint8_t value);
-void GPIO_WriteOutputPort(pGPIO_RegDef_t GPIOx, uint16_t value);
-void GPIO_ToggleOutputPin(pGPIO_RegDef_t GPIOx, uint8_t PinNumber);
-
-/*
- * Interrupt
- */
-void GPIO_IRQConfig(uint8_t IRQNumber, uint8_t IRQPriority, uint8_t EnorDi);
-void GPIO_IRQHandling(uint8_t PinNumber);
-
-
-
-
+#endif //MCU1_STM32F407XX_GPIO_DRIVER_H

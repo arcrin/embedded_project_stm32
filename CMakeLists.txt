@@ -12,8 +12,7 @@ set(PROJECT_FILES
         drivers/Src/stm32f407xx_gpio_driver.cpp
         stm32_startup.c
 
-        Src/exp3_button_led_control.cpp
-
+        Src/main.cpp
         )
 
 set(EXECUTABLE ${PROJECT_NAME}.elf)
