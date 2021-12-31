@@ -19,6 +19,40 @@
 #define SRAM2_BASEADDR      (SRAM1_BASEADDR + 0x0001c000)
 #define ROM_BASEADDR        0x1FFF0000U  // System memory
 
+/**********************************************************************
+ * Processor specific details
+ **********************************************************************/
+/*
+ * NVIC registers
+ */
+#define NVIC_ISER0      ((_vo uint32_t *)0xE000E100) // TODO: why are they pointers? because it is address of the retisger
+#define NVIC_ISER1      ((_vo uint32_t *)0xE000E104)
+#define NVIC_ISER2      ((_vo uint32_t *)0xE000E108)
+#define NVIC_ISER3      ((_vo uint32_t *)0xE000E10C)
+#define NVIC_ISER4      ((_vo uint32_t *)0xE000E110)
+#define NVIC_ISER5      ((_vo uint32_t *)0xE000E114)
+#define NVIC_ISER6      ((_vo uint32_t *)0xE000E118)
+#define NVIC_ISER7      ((_vo uint32_t *)0xE000E11C)
+
+#define NVIC_ICER0      ((_vo uint32_t *)0xE000E180)
+#define NVIC_ICER1      ((_vo uint32_t *)0xE000E184)
+#define NVIC_ICER2      ((_vo uint32_t *)0xE000E188)
+#define NVIC_ICER3      ((_vo uint32_t *)0xE000E18C)
+#define NVIC_ICER4      ((_vo uint32_t *)0xE000E190)
+#define NVIC_ICER5      ((_vo uint32_t *)0xE000E194)
+#define NVIC_ICER6      ((_vo uint32_t *)0xE000E198)
+#define NVIC_ICER7      ((_vo uint32_t *)0xE000E19C)
+
+#define NVIC_IPR_BASEADDR       ((_vo uint32_t*)0xE000E400)
+
+#define NO_PR_BIT_IMPLEMENTED   4
+
+
+
+/**********************************************************************
+ * Peripheral specific details
+ **********************************************************************/
+
 /*
  * Peripheral bus base addresses
  */
@@ -30,7 +64,7 @@
 
 
 /*
- * GPIO ports base addresses
+ * Peripherals on AHB1 bus
  */
 #define GPIOA_BASEADDR      (AHB1PERIPH_BASE + 0x0000)
 #define GPIOB_BASEADDR      (AHB1PERIPH_BASE + 0x0400)
@@ -43,6 +77,12 @@
 #define GPIOI_BASEADDR      (AHB1PERIPH_BASE + 0x2000)
 #define GPIOJ_BASEADDR      (AHB1PERIPH_BASE + 0x2400)
 #define GPIOK_BASEADDR      (AHB1PERIPH_BASE + 0x2800)
+
+/*
+ * Peripherals on ABP2 bus
+ */
+#define SYSCFG_BASEADDR     (APB2PERIPH_BASE + 0x3800)
+#define EXTI_BASEADDR       (APB2PERIPH_BASE + 0x3C00)
 
 /*
  * RCC base address
@@ -103,6 +143,31 @@ typedef struct {
 }RCC_RegDef_t, *pRCC_RegDef_t;
 
 /*
+ * EXTI register structure
+ */
+
+typedef struct {
+    _vo uint32_t IMR;
+    _vo uint32_t EMR;
+    _vo uint32_t RTSR;
+    _vo uint32_t FTSR;
+    _vo uint32_t SWIER;
+    _vo uint32_t PR;
+}EXTI_RegDef_t, *pEXTI_RegDef_t;
+
+/*
+ * SYSCFG register structure
+ */
+typedef struct {
+    _vo uint32_t MEMRMP;        // 0x00
+    _vo uint32_t PMC;           // 0x04
+    _vo uint32_t EXTICR[4];     // 0x08 ~ 0x14
+    uint32_t RESERVED[2];       // 0x18 ~ 0x1C
+    _vo uint32_t CMPCR;         // 0x20
+
+}SYSCFG_RegDef_t, *pSYSCFG_RegDef_t ;
+
+/*
  * GPIO definitions
  */
 #define GPIOA   ((pGPIO_RegDef_t) GPIOA_BASEADDR)
@@ -117,10 +182,32 @@ typedef struct {
 #define GPIOJ   ((pGPIO_RegDef_t) GPIOJ_BASEADDR)
 #define GPIOK   ((pGPIO_RegDef_t) GPIOK_BASEADDR)
 
+#define GET_GPIO_PORT_CODE(pPort)    (((pPort) == GPIOA)?0:\
+                                     ((pPort) == GPIOB)?1:\
+                                     ((pPort) == GPIOC)?2:\
+                                     ((pPort) == GPIOD)?3:\
+                                     ((pPort) == GPIOE)?4:\
+                                     ((pPort) == GPIOF)?5:\
+                                     ((pPort) == GPIOG)?6:\
+                                     ((pPort) == GPIOH)?7:\
+                                     ((pPort) == GPIOI)?8:\
+                                     ((pPort) == GPIOJ)?9:\
+                                     ((pPort) == GPIOK)?10:0)
+
 /*
  * RCC definition
  */
 #define RCC     ((pRCC_RegDef_t) RCC_BASEADDR)
+
+/*
+ * EXTI definition
+ */
+#define EXTI    ((pEXTI_RegDef_t) EXTI_BASEADDR)
+
+/*
+ * SYSCFG definition
+ */
+#define SYSCFG  ((pSYSCFG_RegDef_t) SYSCFG_BASEADDR)
 
 
 /*
@@ -150,6 +237,8 @@ typedef struct {
 #define GPIOJ_PCLK_DI()     RCC->AHB1ENR &= ~(1 << 9)
 #define GPIOK_PCLK_DI()     RCC->AHB1ENR &= ~(1 << 10)
 
+#define SYSCFG_PCLK_EN()    RCC->APB1ENR |= 1 << 14
+
 
 /*
  * GPIO reset macro
@@ -167,6 +256,16 @@ typedef struct {
 #define GPIOJ_REG_RESET()        do{RCC->AHB1RSTR |= (1<<9); RCC->AHB1RSTR &= ~(1<<9);} while(0)
 #define GPIOK_REG_RESET()        do{RCC->AHB1RSTR |= (1<<10); RCC->AHB1RSTR &= ~(1<<10);} while(0)
 
+/*
+ * IRQ numbers
+ */
+#define IRQ_NO_EXTI0        13
+#define IRQ_NO_EXTI1        14
+#define IRQ_NO_EXTI2        15
+#define IRQ_NO_EXTI3        16
+#define IRQ_NO_EXTI4        17
+#define IRQ_NO_EXTI9_5      23
+#define IRQ_NO_EXTI15_10    40
 
 /*
  * Generic macros
@@ -177,6 +276,8 @@ typedef struct {
 #define RESET           DISABLE
 #define GPIO_PIN_SET    SET
 #define GPIO_PIN_RESET  RESET
+
+
 
 
 #endif //MCU1_STM32F407XX_H

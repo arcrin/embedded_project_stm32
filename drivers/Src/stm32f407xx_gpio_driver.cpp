@@ -113,8 +113,31 @@ void GPIO_Init(pGPIO_Handle_t pGPIOHandle){
                 ~(0x3 << (pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber * 2));
         pGPIOHandle->pGPIOx->MODER |=
                 (pGPIOHandle->GPIO_PinConfig.GPIO_PinMode << (pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber * 2));
-    } else{}
-
+    } else{
+        // All these codes are to enable the interrupt on peripheral side
+        if (pGPIOHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_IT_RT_MODE) {
+            // 1. Enable rising edge trigger
+            EXTI->RTSR |= (1 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
+            // 2. Disable falling edge trigger
+            EXTI->FTSR &= ~(1 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
+        } else if (pGPIOHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_IT_FT_MODE) {
+            // 1. Enable falling edge trigger
+            EXTI->FTSR |= (1 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
+            // 2. Disable rising edge trigger
+            EXTI->RTSR &= ~(1 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
+        } else if (pGPIOHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_IT_RFT_MODE) {
+            // 1. Enable both rising and falling edge trigger
+            EXTI->RTSR |= (1 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
+            EXTI->FTSR |= (1 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
+        }
+        // enable EXTI interrupt delivery
+        EXTI->IMR |= (1 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
+        uint8_t exticr_level = (pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber) / 4;
+        uint8_t exticr_bit_position = (pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber) % 4;
+        SYSCFG_PCLK_EN();
+        uint32_t port_code = GET_GPIO_PORT_CODE(pGPIOHandle->pGPIOx);
+        SYSCFG->EXTICR[exticr_level] |= (port_code << (exticr_bit_position * 4)); // shift 4 times
+    }
     //2. configure the speed
     pGPIOHandle->pGPIOx->OSPEEDR &=
             ~(0x3 << (pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber * 2));
@@ -278,5 +301,36 @@ void GPIO_ToggleOutputPin(pGPIO_RegDef_t pGPIOx, uint8_t PinNumber){
 /*
  * Interrupt
  */
-void GPIO_IRQConfig(uint8_t IRQNumber, uint8_t IRQPriority, uint8_t EnorDi);
+void GPIO_IRQITConfig(uint8_t IRQNumber, uint8_t IRQPriority, uint8_t EnorDi) {
+    if (EnorDi == ENABLE) {
+        if (IRQNumber <= 31) {
+            // Program ISER0 register
+            *NVIC_ISER0 |= (0x1 << IRQNumber);
+        } else if (IRQNumber > 31 && IRQNumber <= 63) {
+            // Program ISER1 register
+            *NVIC_ISER1 |= (0x1 << (IRQNumber % 32));
+        } else if (IRQNumber > 63 && IRQNumber <= 96) {
+            // Program ISER2 register
+            *NVIC_ISER2 |= (0x1 << (IRQNumber % 32));
+        }
+    } else {
+        if (IRQNumber <= 31) {
+            // Program ISER0 register
+            *NVIC_ICER0 |= (0x1 << IRQNumber);
+        } else if (IRQNumber > 31 && IRQNumber <= 63) {
+            // Program ISER1 register
+            *NVIC_ICER1 |= (0x1 << (IRQNumber % 32));
+        } else if (IRQNumber > 63 && IRQNumber <= 96) {
+            // Program ISER2 register
+            *NVIC_ICER2 |= (0x1 << (IRQNumber % 32));
+        }
+    }
+}
+
+void GPIO_IRQPriorityConfig(uint8_t IRQNumber, uint8_t IRQPriority){
+    uint8_t ipr_register_offset = IRQPriority / 4;
+    uint8_t ipr_byte_offset = IRQPriority % 4;
+    *(NVIC_IPR_BASEADDR + (0x4 * ipr_register_offset)) |= ((IRQNumber << NO_PR_BIT_IMPLEMENTED) << (ipr_byte_offset * 8));
+}
+
 void GPIO_IRQHandling(uint8_t PinNumber);
