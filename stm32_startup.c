@@ -225,7 +225,6 @@ void HardFault_Handler(void)
     while(1);
 };
 
-
 void Reset_Handler(void)
 {
     //copy .data section to SRAM
