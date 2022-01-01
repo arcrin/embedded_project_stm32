@@ -130,13 +130,14 @@ void GPIO_Init(pGPIO_Handle_t pGPIOHandle){
             EXTI->RTSR |= (1 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
             EXTI->FTSR |= (1 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
         }
-        // enable EXTI interrupt delivery
-        EXTI->IMR |= (1 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
+
         uint8_t exticr_level = (pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber) / 4;
         uint8_t exticr_bit_position = (pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber) % 4;
         SYSCFG_PCLK_EN();
         uint32_t port_code = GET_GPIO_PORT_CODE(pGPIOHandle->pGPIOx);
         SYSCFG->EXTICR[exticr_level] |= (port_code << (exticr_bit_position * 4)); // shift 4 times
+        // enable EXTI interrupt delivery
+        EXTI->IMR |= (1 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
     }
     //2. configure the speed
     pGPIOHandle->pGPIOx->OSPEEDR &=
@@ -301,7 +302,7 @@ void GPIO_ToggleOutputPin(pGPIO_RegDef_t pGPIOx, uint8_t PinNumber){
 /*
  * Interrupt
  */
-void GPIO_IRQITConfig(uint8_t IRQNumber, uint8_t IRQPriority, uint8_t EnorDi) {
+void GPIO_IRQITConfig(uint8_t IRQNumber, uint8_t EnorDi) {
     if (EnorDi == ENABLE) {
         if (IRQNumber <= 31) {
             // Program ISER0 register
@@ -311,7 +312,7 @@ void GPIO_IRQITConfig(uint8_t IRQNumber, uint8_t IRQPriority, uint8_t EnorDi) {
             *NVIC_ISER1 |= (0x1 << (IRQNumber % 32));
         } else if (IRQNumber > 63 && IRQNumber <= 96) {
             // Program ISER2 register
-            *NVIC_ISER2 |= (0x1 << (IRQNumber % 32));
+            *NVIC_ISER2 |= (0x1 << (IRQNumber % 64));
         }
     } else {
         if (IRQNumber <= 31) {
@@ -322,7 +323,7 @@ void GPIO_IRQITConfig(uint8_t IRQNumber, uint8_t IRQPriority, uint8_t EnorDi) {
             *NVIC_ICER1 |= (0x1 << (IRQNumber % 32));
         } else if (IRQNumber > 63 && IRQNumber <= 96) {
             // Program ISER2 register
-            *NVIC_ICER2 |= (0x1 << (IRQNumber % 32));
+            *NVIC_ICER2 |= (0x1 << (IRQNumber % 64));
         }
     }
 }
@@ -333,4 +334,9 @@ void GPIO_IRQPriorityConfig(uint8_t IRQNumber, uint8_t IRQPriority){
     *(NVIC_IPR_BASEADDR + (0x4 * ipr_register_offset)) |= ((IRQNumber << NO_PR_BIT_IMPLEMENTED) << (ipr_byte_offset * 8));
 }
 
-void GPIO_IRQHandling(uint8_t PinNumber);
+void GPIO_IRQHandling(uint8_t PinNumber){
+    // clear the exti PR (pending register) register
+    if (EXTI->PR & (1 << PinNumber)) {
+        EXTI->PR |= (1 << PinNumber);
+    }
+}

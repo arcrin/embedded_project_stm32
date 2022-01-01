@@ -237,7 +237,7 @@ typedef struct {
 #define GPIOJ_PCLK_DI()     RCC->AHB1ENR &= ~(1 << 9)
 #define GPIOK_PCLK_DI()     RCC->AHB1ENR &= ~(1 << 10)
 
-#define SYSCFG_PCLK_EN()    RCC->APB1ENR |= 1 << 14
+#define SYSCFG_PCLK_EN()    RCC->APB2ENR |= (1 << 14)
 
 
 /*
@@ -259,11 +259,11 @@ typedef struct {
 /*
  * IRQ numbers
  */
-#define IRQ_NO_EXTI0        13
-#define IRQ_NO_EXTI1        14
-#define IRQ_NO_EXTI2        15
-#define IRQ_NO_EXTI3        16
-#define IRQ_NO_EXTI4        17
+#define IRQ_NO_EXTI0        6
+#define IRQ_NO_EXTI1        7
+#define IRQ_NO_EXTI2        8
+#define IRQ_NO_EXTI3        9
+#define IRQ_NO_EXTI4        10
 #define IRQ_NO_EXTI9_5      23
 #define IRQ_NO_EXTI15_10    40
 
