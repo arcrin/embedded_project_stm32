@@ -19,73 +19,73 @@
  *
  * @Note			- None
  ********************************************************/
-void GPIO_PeriClockControl(pGPIO_RegDef_t pGPIOx,uint8_t EnorDi){
-    if (EnorDi == ENABLE) {
+void GPIO_PeriClockControl(pGPIO_RegDef_t pGPIOx,uint8_t ENorDI){
+    if (ENorDI == ENABLE) {
         if(pGPIOx == GPIOA) {
             GPIOA_PCLK_EN();
         }
-        if(pGPIOx == GPIOB) {
+        else if(pGPIOx == GPIOB) {
             GPIOB_PCLK_EN();
         }
-        if(pGPIOx == GPIOC) {
+        else if(pGPIOx == GPIOC) {
             GPIOC_PCLK_EN();
         }
-        if(pGPIOx == GPIOD) {
+        else if(pGPIOx == GPIOD) {
             GPIOD_PCLK_EN();
         }
-        if(pGPIOx == GPIOE) {
+        else if(pGPIOx == GPIOE) {
             GPIOE_PCLK_EN();
         }
-        if(pGPIOx == GPIOF) {
+        else if(pGPIOx == GPIOF) {
             GPIOF_PCLK_EN();
         }
-        if(pGPIOx == GPIOG) {
+        else if(pGPIOx == GPIOG) {
             GPIOG_PCLK_EN();
         }
-        if(pGPIOx == GPIOH) {
+        else if(pGPIOx == GPIOH) {
             GPIOH_PCLK_EN();
         }
-        if(pGPIOx == GPIOI) {
+        else if(pGPIOx == GPIOI) {
             GPIOI_PCLK_EN();
         }
-        if(pGPIOx == GPIOJ) {
+        else if(pGPIOx == GPIOJ) {
             GPIOJ_PCLK_EN();
         }
-        if(pGPIOx == GPIOK) {
+        else if(pGPIOx == GPIOK) {
             GPIOK_PCLK_EN();
         }
-    } else if (EnorDi == DISABLE) {
+    } else if (ENorDI == DISABLE) {
         if(pGPIOx == GPIOA) {
             GPIOA_PCLK_DI();
         }
-        if(pGPIOx == GPIOB) {
+        else if(pGPIOx == GPIOB) {
             GPIOB_PCLK_DI();
         }
-        if(pGPIOx == GPIOC) {
+        else if(pGPIOx == GPIOC) {
             GPIOC_PCLK_DI();
         }
-        if(pGPIOx == GPIOD) {
+        else if(pGPIOx == GPIOD) {
             GPIOD_PCLK_DI();
         }
-        if(pGPIOx == GPIOE) {
+        else if(pGPIOx == GPIOE) {
             GPIOE_PCLK_DI();
         }
-        if(pGPIOx == GPIOF) {
+        else if(pGPIOx == GPIOF) {
             GPIOF_PCLK_DI();
         }
-        if(pGPIOx == GPIOG) {
+        else if(pGPIOx == GPIOG) {
             GPIOG_PCLK_DI();
         }
-        if(pGPIOx == GPIOH) {
+        else if(pGPIOx == GPIOH) {
             GPIOH_PCLK_DI();
         }
-        if(pGPIOx == GPIOI) {
+        else if(pGPIOx == GPIOI) {
             GPIOI_PCLK_DI();
         }
-        if(pGPIOx == GPIOJ) {
+        else if(pGPIOx == GPIOJ) {
             GPIOJ_PCLK_DI();
         }
-        if(pGPIOx == GPIOK) {
+        else if(pGPIOx == GPIOK) {
             GPIOK_PCLK_DI();
         }
     }
@@ -302,8 +302,21 @@ void GPIO_ToggleOutputPin(pGPIO_RegDef_t pGPIOx, uint8_t PinNumber){
 /*
  * Interrupt
  */
-void GPIO_IRQITConfig(uint8_t IRQNumber, uint8_t EnorDi) {
-    if (EnorDi == ENABLE) {
+/********************************************************
+ * @fn				- GPIO_IRQITConfig
+ *
+ * @brief			- Enable corresponding interrupt based on given IRQ number, this is considered
+ *                    enabling interrupt on processor side
+ *
+ * @param[uint8_t]  - IRQ number (position)
+ * @param[uint8_t]  - ENABLE or DISABLE
+ *
+ * @return          - None
+ *
+ * @Note			-
+ ********************************************************/
+void GPIO_IRQITConfig(uint8_t IRQNumber, uint8_t ENorDI) {
+    if (ENorDI == ENABLE) {
         if (IRQNumber <= 31) {
             // Program ISER0 register
             *NVIC_ISER0 |= (0x1 << IRQNumber);
@@ -327,13 +340,34 @@ void GPIO_IRQITConfig(uint8_t IRQNumber, uint8_t EnorDi) {
         }
     }
 }
-
+/********************************************************
+ * @fn				- GPIO_IRQPriorityConfig
+ *
+ * @brief			- Set priority for given IRQ number
+ *
+ * @param[uint8_t]  - IRQ number (position)
+ * @param[uint8_t]  - ENABLE or DISABLE
+ *
+ * @return          - None
+ *
+ * @Note			-
+ ********************************************************/
 void GPIO_IRQPriorityConfig(uint8_t IRQNumber, uint8_t IRQPriority){
     uint8_t ipr_register_offset = IRQPriority / 4;
     uint8_t ipr_byte_offset = IRQPriority % 4;
     *(NVIC_IPR_BASEADDR + (0x4 * ipr_register_offset)) |= ((IRQNumber << NO_PR_BIT_IMPLEMENTED) << (ipr_byte_offset * 8));
 }
-
+/********************************************************
+ * @fn				- GPIO_IRQHandling
+ *
+ * @brief			- Set priority for given IRQ number
+ *
+ * @param[uint8_t]  - GPIO pin number
+ *
+ * @return          - None
+ *
+ * @Note			-
+ ********************************************************/
 void GPIO_IRQHandling(uint8_t PinNumber){
     // clear the exti PR (pending register) register
     if (EXTI->PR & (1 << PinNumber)) {

@@ -1,5 +1,5 @@
 //
-// Created by andy- on 2021-12-05.
+// Created by andy- on 2021-12-05.#endif without #if clion
 //
 
 /*
@@ -22,7 +22,6 @@ typedef struct {
     pGPIO_RegDef_t pGPIOx;              // holds the base address of the GPIO port to which the pin belongs
     GPIO_PinConfig_t GPIO_PinConfig;     // holds GPIO pin configuration settings
 }GPIO_Handle_t, *pGPIO_Handle_t;
-
 /*
  * GPIO PIN definition
  */
@@ -83,7 +82,7 @@ typedef struct {
 /*
  * Peripheral clock setup
  */
-void GPIO_PeriClockControl(pGPIO_RegDef_t pGPIOx,uint8_t ENorDi);
+void GPIO_PeriClockControl(pGPIO_RegDef_t pGPIOx,uint8_t ENorDI);
 
 /*
  * Init and De-init
@@ -101,9 +100,9 @@ void GPIO_WriteOutputPort(pGPIO_RegDef_t GPIOx, uint16_t value);
 void GPIO_ToggleOutputPin(pGPIO_RegDef_t GPIOx, uint8_t PinNumber);
 
 /*
- * Interrupt
+ * IRQ configuration and ISR handling
  */
-void GPIO_IRQITConfig(uint8_t IRQNumber, uint8_t EnorDi);
+void GPIO_IRQITConfig(uint8_t IRQNumber, uint8_t ENorDI);
 void GPIO_IRQPriorityConfig(uint8_t IRQNumber, uint8_t Priority);
 void GPIO_IRQHandling(uint8_t PinNumber);
 

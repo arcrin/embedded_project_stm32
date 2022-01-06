@@ -79,8 +79,15 @@
 #define GPIOK_BASEADDR      (AHB1PERIPH_BASE + 0x2800)
 
 /*
+ * Peripherals on  ABP1 bus
+ */
+#define SPI2_BASEADDR       (APB1PERIPH_BASE + 0x3800)
+#define SPI3_BASEADDR       (APB1PERIPH_BASE + 0x3C00)
+
+/*
  * Peripherals on ABP2 bus
  */
+#define SPI1_BASEADDR       (APB2PERIPH_BASE + 0x3000)
 #define SYSCFG_BASEADDR     (APB2PERIPH_BASE + 0x3800)
 #define EXTI_BASEADDR       (APB2PERIPH_BASE + 0x3C00)
 
@@ -142,6 +149,7 @@ typedef struct {
     _vo int32_t DCKCFGR;
 }RCC_RegDef_t, *pRCC_RegDef_t;
 
+
 /*
  * EXTI register structure
  */
@@ -164,8 +172,23 @@ typedef struct {
     _vo uint32_t EXTICR[4];     // 0x08 ~ 0x14
     uint32_t RESERVED[2];       // 0x18 ~ 0x1C
     _vo uint32_t CMPCR;         // 0x20
-
 }SYSCFG_RegDef_t, *pSYSCFG_RegDef_t ;
+
+/*
+ * SPI register structure
+ */
+typedef struct{
+    _vo uint32_t CR1;
+    _vo uint32_t CR2;
+    _vo uint32_t SR;
+    _vo uint32_t DR;
+    _vo uint32_t CRCPR;
+    _vo uint32_t RXCRCR;
+    _vo uint32_t TXCRCR;
+    _vo uint32_t I2SCFGR;
+    _vo uint32_t I2SPR;
+}SPI_RegDef_t, *pSPI_RegDef_t;
+
 
 /*
  * GPIO definitions
@@ -195,6 +218,13 @@ typedef struct {
                                      ((pPort) == GPIOK)?10:0)
 
 /*
+ * SPI definition
+ */
+#define SPI1    ((pSPI_RegDef_t) SPI1_BASEADDR)
+#define SPI2    ((pSPI_RegDef_t) SPI2_BASEADDR)
+#define SPI3    ((pSPI_RegDef_t) SPI3_BASEADDR)
+
+/*
  * RCC definition
  */
 #define RCC     ((pRCC_RegDef_t) RCC_BASEADDR)
@@ -211,7 +241,7 @@ typedef struct {
 
 
 /*
- * Clock macros
+ * GPIO clock macros
  */
 #define GPIOA_PCLK_EN()     RCC->AHB1ENR |= 1 << 0
 #define GPIOB_PCLK_EN()     RCC->AHB1ENR |= 1 << 1
@@ -237,14 +267,30 @@ typedef struct {
 #define GPIOJ_PCLK_DI()     RCC->AHB1ENR &= ~(1 << 9)
 #define GPIOK_PCLK_DI()     RCC->AHB1ENR &= ~(1 << 10)
 
+
+/*
+ * SPI clock macros
+ */
+#define SPI1_PCLK_EN()      RCC->APB2ENR |= (1 << 12)
+#define SPI2_PCLK_EN()      RCC->APB1ENR |= (1 << 14)
+#define SPI3_PCLK_EN()      RCC->APB1ENR |= (1 << 15)
+
+#define SPI1_PCLK_DI()      RCC->APB2ENR &= ~(1 << 12)
+#define SPI2_PCLK_DI()      RCC->APB1ENR &= ~(1 << 14)
+#define SPI3_PCLK_DI()      RCC->APB1ENR &= ~(1 << 15)
+
+/*
+ * System configuration controller clock macro
+ */
 #define SYSCFG_PCLK_EN()    RCC->APB2ENR |= (1 << 14)
+
+#define SYSCFG_PCLK_DI()    RCC->APB2ENR &= ~(1 << 14)
 
 
 /*
  * GPIO reset macro
  */
-
-#define GPIOA_REG_RESET()        do{RCC->AHB1RSTR |= (1<<0); RCC->AHB1RSTR &= ~(1<<0);} while(0)
+#define GPIOA_REG_RESET()        do{RCC->AHB1RSTR |= (1<<0); RCC->AHB1RSTR &= ~(1<<0);} while(0) // set to 1, then clear to 0
 #define GPIOB_REG_RESET()        do{RCC->AHB1RSTR |= (1<<1); RCC->AHB1RSTR &= ~(1<<1);} while(0)
 #define GPIOC_REG_RESET()        do{RCC->AHB1RSTR |= (1<<2); RCC->AHB1RSTR &= ~(1<<2);} while(0)
 #define GPIOD_REG_RESET()        do{RCC->AHB1RSTR |= (1<<3); RCC->AHB1RSTR &= ~(1<<3);} while(0)
@@ -255,6 +301,15 @@ typedef struct {
 #define GPIOI_REG_RESET()        do{RCC->AHB1RSTR |= (1<<8); RCC->AHB1RSTR &= ~(1<<8);} while(0)
 #define GPIOJ_REG_RESET()        do{RCC->AHB1RSTR |= (1<<9); RCC->AHB1RSTR &= ~(1<<9);} while(0)
 #define GPIOK_REG_RESET()        do{RCC->AHB1RSTR |= (1<<10); RCC->AHB1RSTR &= ~(1<<10);} while(0)
+
+
+/*
+ * SPI reset macros
+ */
+#define SPI1_REG_RESET()        do{RCC->APB2RSTR |= (1<<12); RCC->APB2RSTR &= ~(1<<12);} while(0)
+#define SPI2_REG_RESET()        do{RCC->APB1RSTR |= (1<<14); RCC->APB1RSTR &= ~(1<<14);} while(0)
+#define SPI3_REG_RESET()        do{RCC->APB1RSTR |= (1<<15); RCC->APB1RSTR &= ~(1<<15);} while(0)
+
 
 /*
  * IRQ numbers
@@ -276,8 +331,5 @@ typedef struct {
 #define RESET           DISABLE
 #define GPIO_PIN_SET    SET
 #define GPIO_PIN_RESET  RESET
-
-
-
 
 #endif //MCU1_STM32F407XX_H

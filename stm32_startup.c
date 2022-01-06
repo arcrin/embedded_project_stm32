@@ -214,7 +214,6 @@ uint32_t vectors[] __attribute__((section(".isr_vector")))   = {
         (uint32_t)FPU_IRQHandler,
 };
 
-
 void Default_Handler(void)
 {
     while(1);

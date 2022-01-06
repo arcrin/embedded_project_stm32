@@ -7,6 +7,7 @@
 //
 
 #include "stm32f407xx_gpio_driver.h"
+#include "stm32f407xx_spi_driver.h"
 #include <cstdint>
 #include <cstring>
 
@@ -46,7 +47,7 @@ int main() {
 
 extern "C"{ // use extern "C" to prevent C++ name mangling
     void EXTI0_IRQHandler() {
-        delay(10);
+        delay(10); //TODO: seems like there is debouncing problem
         GPIO_IRQHandling(0);
         GPIO_ToggleOutputPin(GPIOD, GPIO_PIN_NO_12);
     }
