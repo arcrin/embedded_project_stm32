@@ -12,7 +12,7 @@ set(PROJECT_FILES
         drivers/Inc/stm32f407xx_spi_driver.h
         drivers/Src/stm32f407xx_gpio_driver.cpp
         drivers/Src/stm32f407xx_spi_driver.cpp
-        Src/exp5_gpio_interrupt_led_control.cpp
+        Src/exp6_spi_send_data.cpp
         stm32_startup.c
         )
 
