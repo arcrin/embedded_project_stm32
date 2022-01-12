@@ -12,7 +12,11 @@ set(PROJECT_FILES
         drivers/Inc/stm32f407xx_spi_driver.h
         drivers/Src/stm32f407xx_gpio_driver.cpp
         drivers/Src/stm32f407xx_spi_driver.cpp
-        Src/exp6_spi_send_data.cpp
+        modules/epaper/Inc/EPD_2in66.h
+        modules/epaper/Src/EPD_2in66.cpp
+        modules/epaper/GUI/GUI_Paint.h
+        modules/epaper/GUI/GUI_Paint.cpp
+        Src/exp7_epaper.cpp
         stm32_startup.c
         )
 
@@ -23,6 +27,10 @@ add_executable(${EXECUTABLE} ${PROJECT_FILES})
 target_include_directories(${EXECUTABLE} PRIVATE
         drivers/Inc
         drivers/Src
+        modules/epaper/Inc
+        modules/epaper/src
+        modules/epaper/Fonts
+        modules/epaper/GUI
         Src
         )
 

@@ -59,6 +59,9 @@ void SPI_PeriClockControl(pSPI_RegDef_t pSPIx, uint8_t ENorDI){
  * @Note			- None
  ********************************************************/
 void SPI_Init(pSPI_Handle_t pSPIHandle){
+    // enable clock
+    SPI_PeriClockControl(pSPIHandle->pSPIx, ENABLE);
+
     // device mode
     pSPIHandle->pSPIx->CR1 |= pSPIHandle->SPIConfig.SPI_DeviceMode << SPI_CR1_MSTR;
     // bus config
@@ -82,6 +85,8 @@ void SPI_Init(pSPI_Handle_t pSPIHandle){
     pSPIHandle->pSPIx->CR1 |= pSPIHandle->SPIConfig.SPI_CPOL << SPI_CR1_CPOL;
     // clock phase config
     pSPIHandle->pSPIx->CR1 |= pSPIHandle->SPIConfig.SPI_CPHA << SPI_CR1_CPHA;
+    // software slave management
+    pSPIHandle->pSPIx->CR1 |= pSPIHandle->SPIConfig.SPI_SSM << SPI_CR1_SSM;
 }
 
 void SPI_DeInit(pSPI_RegDef_t pSPIx){
@@ -151,3 +156,24 @@ void SPI_IRQITConfit(uint8_t IRQNumber, uint8_t ENorDI);
 void SPI_IRQPriorityConfig(uint8_t IEQNumber, uint8_t Priority);
 
 void SPI_IRQHandling(pSPI_Handle_t pSpiHandle);
+
+/*
+ * other peripheral APIs
+ */
+void SPI_PeriControl(SPI_RegDef_t *pSPIx, uint8_t EnOrDi){
+    // pSPIx->CR1 |= EnOrDi << SPI_CR1_SPE; // this doesn't clear the bit
+    if (EnOrDi == ENABLE) {
+        pSPIx->CR1 |= (1 << SPI_CR1_SPE);
+    } else if (EnOrDi == DISABLE) {
+        pSPIx->CR1 &= ~(1 << SPI_CR1_SPE);
+    }
+}
+
+void SPI_SSIConfig(pSPI_RegDef_t pSPIx, uint8_t EnOrDi){
+    // the SSI bit works with SSM
+    if (EnOrDi == ENABLE) {
+        pSPIx->CR1 |= (1 << SPI_CR1_SSI);
+    } else if (EnOrDi == DISABLE) {
+        pSPIx->CR1 &= ~(1 << SPI_CR1_SSI);
+    }
+}

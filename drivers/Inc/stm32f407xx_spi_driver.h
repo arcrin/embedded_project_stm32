@@ -164,5 +164,11 @@ void SPI_IRQPriorityConfig(uint8_t IEQNumber, uint8_t Priority);
 
 void SPI_IRQHandling(pSPI_Handle_t pSpiHandle);
 
+/*
+ * other peripheral APIs
+ */
+void SPI_PeriControl(pSPI_RegDef_t pSPIx, uint8_t EnOrDi);
+
+void SPI_SSIConfig(pSPI_RegDef_t pSPIx, uint8_t EnOrDi);
 
 #endif //MCU1_STM32F407_SPI_DRIVER_H

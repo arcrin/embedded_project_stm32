@@ -20,8 +20,8 @@ int main() {
 
     led_gpio_handle.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_PIN_PU;
 
+//    GPIO_PeriClockControl(led_gpio_handle.pGPIOx, ENABLE);
     GPIO_Init(&led_gpio_handle);
-    GPIO_PeriClockControl(led_gpio_handle.pGPIOx, ENABLE);
 
     while (1) {
         // the led will toggle with very low intensity, the internal pull-up resistor is too high

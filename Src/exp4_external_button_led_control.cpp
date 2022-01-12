@@ -23,7 +23,7 @@ int main() {
     ext_led_gpio_handle.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_HIGH;
     ext_led_gpio_handle.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_PP;
     ext_led_gpio_handle.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD;
-    GPIO_PeriClockControl(ext_led_gpio_handle.pGPIOx, ENABLE); // this needs to be called before GPIO_Init
+//    GPIO_PeriClockControl(ext_led_gpio_handle.pGPIOx, ENABLE); // this needs to be called before GPIO_Init
     GPIO_Init(&ext_led_gpio_handle);
 
     ext_btn_gpio_handle.pGPIOx = GPIOB;
@@ -31,7 +31,7 @@ int main() {
     ext_btn_gpio_handle.GPIO_PinConfig.GPIO_PinMode = GPIO_IN_MODE;
     ext_btn_gpio_handle.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_HIGH;
     ext_btn_gpio_handle.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD;
-    GPIO_PeriClockControl(ext_btn_gpio_handle.pGPIOx, ENABLE);
+//    GPIO_PeriClockControl(ext_btn_gpio_handle.pGPIOx, ENABLE);
     GPIO_Init(&ext_btn_gpio_handle);
     while(1){
         if (GPIO_ReadFromInputPin(ext_btn_gpio_handle.pGPIOx, ext_btn_gpio_handle.GPIO_PinConfig.GPIO_PinNumber) ==
