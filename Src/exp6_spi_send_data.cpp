@@ -24,16 +24,16 @@ void SPI2_GPIOInits(void){
     SPIPins.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_HIGH; // MED or SLOW speed would also work, not sure about VHIGH
 
     // NSS configure
-    SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_12;
-    GPIO_Init(&SPIPins);
+//    SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_12;
+//    GPIO_Init(&SPIPins);
 
     // SCK configuration
     SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_13;
     GPIO_Init(&SPIPins);
 
     // MISO configuration
-    SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_14;
-    GPIO_Init(&SPIPins);
+//    SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_14;
+//    GPIO_Init(&SPIPins);
 
     // MOSI configuration
     SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_15;
@@ -61,11 +61,12 @@ int main() {
     // initialize SPI2, this needs to be done while SPI2 is disabled, CR1->SPE set to 0 (default)
     SPI2_Inits();
 
+    // set SSI bit in CR1, without setting this bit, MODF error will occur. Configure before SPI enabled
+    SPI_SSIConfig(SPI2, ENABLE);
+
     // enable SPI2, CR1->SPE set to 1
     SPI_PeriControl(SPI2, ENABLE);
 
-    // set SSI bit in CR1, without setting this bit, MODF error will occur
-    SPI_SSIConfig(SPI2, ENABLE);
 
     SPI_Send_Data(SPI2, (uint8_t *) user_data, strlen(user_data));
 
