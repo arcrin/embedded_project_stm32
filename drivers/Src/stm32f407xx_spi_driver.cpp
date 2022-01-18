@@ -177,3 +177,14 @@ void SPI_SSIConfig(pSPI_RegDef_t pSPIx, uint8_t EnOrDi){
         pSPIx->CR1 &= ~(1 << SPI_CR1_SSI);
     }
 }
+
+/**********************************************************
+ * works with hardware slave management
+ **********************************************************/
+void SPI_SSOEConfig(pSPI_RegDef_t pSPIx, uint8_t EnOrDi){
+    if (EnOrDi == ENABLE) {
+        pSPIx->CR2 |= (1 << SPI_CR2_SSOE);
+    } else if (EnOrDi == DISABLE) {
+        pSPIx->CR2 &= ~(1 << SPI_CR2_SSOE);
+    }
+}

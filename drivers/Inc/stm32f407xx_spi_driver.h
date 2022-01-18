@@ -123,7 +123,7 @@ typedef struct {
 #define SPI_SR_CRCEER       4 // CRC error flag
 #define SPI_SR_MODF         5 // mode fault TODO: ?
 #define SPI_SR_OVR          6 // overrun flag TODO: ?
-#define SPI_SR_BSY          7 // busy flag
+#define SPI_SR_BUSY          7 // busy flag
 #define SPI_SR_FRE          8 // frame format error
 
 /*
@@ -170,5 +170,9 @@ void SPI_IRQHandling(pSPI_Handle_t pSpiHandle);
 void SPI_PeriControl(pSPI_RegDef_t pSPIx, uint8_t EnOrDi);
 
 void SPI_SSIConfig(pSPI_RegDef_t pSPIx, uint8_t EnOrDi);
+
+void SPI_SSOEConfig(pSPI_RegDef_t pSPIx, uint8_t EnOrDi);
+
+uint8_t SPI_GetFlagStatus(pSPI_RegDef_t pSPIx, uint32_t FlagName);
 
 #endif //MCU1_STM32F407_SPI_DRIVER_H

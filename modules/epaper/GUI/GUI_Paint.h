@@ -30,7 +30,7 @@ extern PAINT Paint;
 /*
  * Display rotate
  */
-#define ROATE_0             0
+#define ROTATE_0             0
 #define ROTATE_90           90
 #define ROTATE_180          180
 #define ROTATE_270          270
@@ -131,6 +131,43 @@ void Paint_SetMirroring(UBYTE mirror);
 
 void Paint_SetPixel(UWORD Xpoint, UWORD Ypoint, UWORD Color);
 
+void Paint_SetScake(UBYTE scale);
 
+void Paint_Clear(UWORD Color);
+
+void Paint_ClearWindows(UWORD Xstart, UWORD YStart, UWORD Xend, UWORD Yend, UWORD Color);
+
+// Drawing
+void Paint_DrawPoint(UWORD Xpoint, UWORD Ypoint, UWORD Color, DOT_PIXEL Dot_Pixel, DOT_STYLE Dot_FillWay);
+
+void Paint_DrawLine(UWORD Xstart, UWORD Ystart, UWORD Xend, UWORD Yend, UWORD Color, DOT_PIXEL Line_width,
+                    LINE_STYLE Line_Style);
+
+void Paint_DrawRectangle(UWORD Xstart, UWORD Ystart, UWORD Xend, UWORD Yend, UWORD Color, DOT_PIXEL Line_width,
+                         DRAW_FILL Draw_Fill);
+
+void Paint_DrawCircle(UWORD X_Center, UWORD Y_Center, UWORD Radius, UWORD Color, DOT_PIXEL Line_width,
+                      DRAW_FILL Draw_Fill);
+
+// Display string
+void Paint_DrawChar(UWORD Xstart, UWORD Ystart, const char Ascii_Char, sFONT *Font, UWORD Color_Foreground,
+                    UWORD Color_Background);
+
+void Paint_DrawString_EN(UWORD Xstart, UWORD Ystart, const char *pString, sFONT *Font, UWORD Color_Foreground,
+                         UWORD Color_Background);
+
+void Paint_DrawNum(UWORD Xpoint, UWORD Ypoint, int32_t Number, sFONT *Font, UWORD Color_Foreground,
+                   UWORD Color_Background);
+
+void Paint_DrawTime(UWORD Xstart, UWORD Ystart, PAINT_TIME *pTime, sFONT *Font, UWORD Color_Foreground,
+                    UWORD Color_Background);
+
+// pic
+void Paint_DrawBitMap(const unsigned char *image_buffer);
+
+void Paint_DrawBitMap_Paste(const unsigned char *image_buffer, UWORD Xstart, UWORD Ystart, UWORD iamgeWidth,
+                            UWORD imageHeight, UBYTE flipColor);
+
+void Paint_DrawBitMap_Block(const unsigned char *image_buffer, UBYTE Region);
 
 #endif //MCU1_GUI_PAINT_H

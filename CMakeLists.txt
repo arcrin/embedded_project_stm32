@@ -12,15 +12,17 @@ set(PROJECT_FILES
         drivers/Inc/stm32f407xx_spi_driver.h
         drivers/Src/stm32f407xx_gpio_driver.cpp
         drivers/Src/stm32f407xx_spi_driver.cpp
-        modules/epaper/Inc/EPD_2in66.h
-        modules/epaper/Src/EPD_2in66.cpp
-        modules/epaper/Fonts/font8.cpp
-        modules/epaper/Fonts/font12.cpp
-        modules/epaper/Fonts/font16.cpp
-        modules/epaper/Fonts/font20.cpp
-        modules/epaper/Fonts/font24.cpp
-        modules/epaper/Fonts/fonts.h
-        Src/exp7_epaper.cpp
+#        modules/epaper/Inc/EPD_2in66.h
+#        modules/epaper/Src/EPD_2in66.cpp
+#        modules/epaper/Fonts/font8.cpp
+#        modules/epaper/Fonts/font12.cpp
+#        modules/epaper/Fonts/font16.cpp
+#        modules/epaper/Fonts/font20.cpp
+#        modules/epaper/Fonts/font24.cpp
+#        modules/epaper/Fonts/fonts.h
+#        modules/epaper/GUI/GUI_Paint.cpp
+#        modules/epaper/GUI/GUI_Paint.h
+        Src/exp7_spi_send_to_slave.cpp
         stm32_startup.c
         )
 
