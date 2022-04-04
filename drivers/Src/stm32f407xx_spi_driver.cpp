@@ -168,7 +168,11 @@ void SPI_Received_Data(pSPI_RegDef_t pSPIx, uint8_t *pRxBuffer, uint32_t Len){
  * IRQ configuration and ISR handling
  */
 
-void SPI_IRQITConfit(uint8_t IRQNumber, uint8_t ENorDI);
+void SPI_IRQITConfit(uint8_t IRQNumber, uint8_t ENorDI){
+    if (ENorDI == ENABLE) {
+
+    }
+}
 
 void SPI_IRQPriorityConfig(uint8_t IEQNumber, uint8_t Priority);
 
