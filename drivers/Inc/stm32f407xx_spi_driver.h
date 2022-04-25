@@ -85,7 +85,7 @@ typedef struct {
 #define SPI_SSM_EN      1
 
 /*
- * SPI control register 1 bit definition macros
+ * SPI control register_1 bit definition macros
  */
 #define SPI_CR1_CPHA        0 // clock phase
 #define SPI_CR1_CPOL        1 // clock polarity
@@ -103,7 +103,7 @@ typedef struct {
 #define SPI_CR1_BIDI        15 // bidirectional data mode enable
 
 /*
- * SPI control register 2 bit definition macros
+ * SPI control register_2 bit definition macros
  */
 #define SPI_CR2_RXDMAEN     0 // rx buffer DMA(direct memory access) enable
 #define SPI_CR2_TXDMAEN     1 // tx buffer DMA enable
@@ -131,7 +131,6 @@ typedef struct {
  */
 #define SPI_RXNE_FLAG       (1 << SPI_SR_RXNE)
 #define SPI_TXE_FLAG        (1 << SPI_SR_TXE)
-#define SPI_RXNE_FLAG       (1 << SPI_SR_RXNE)
 #define SPI_BUSY_FLAG       (1 << SPI_SR_BUSY)
 
 

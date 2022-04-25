@@ -1,7 +1,7 @@
 //
 // Created by wbai on 1/5/2022.
 //
-
+#include "stm32f407xx.h"
 #include "stm32f407xx_spi_driver.h"
 #include "stm32f407xx_gpio_driver.h"
 #include <cstring>
@@ -14,8 +14,9 @@
  * Alternate function: AF5
  */
 
-void delay(uint8_t scale){
-    for (int i = 0; i < 500000/scale; i++);
+void delay(void)
+{
+    for(uint32_t i = 0 ; i < 500000 ; i ++);
 }
 
 void SPI2_GPIOInits(void){
@@ -24,10 +25,10 @@ void SPI2_GPIOInits(void){
     SPIPins.GPIO_PinConfig.GPIO_PinMode = GPIO_ALTFn_MODE;
     SPIPins.GPIO_PinConfig.GPIO_PinAltFunMode = 5;
     SPIPins.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_PP; // TODO: why push pull
-    SPIPins.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD;
+    SPIPins.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_PIN_PU;
     SPIPins.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_HIGH; // MED or SLOW speed would also work, not sure about VHIGH
 
-    // NSS configure
+//     NSS configure
     SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_12;
     GPIO_Init(&SPIPins);
 
@@ -49,11 +50,11 @@ void SPI2_Inits(){
     spi2_handle.pSPIx = SPI2;
     spi2_handle.SPIConfig.SPI_DeviceMode = SPI_DEVICE_MODE_MASTER;
     spi2_handle.SPIConfig.SPI_BusConfig = SPI_BUS_CONFIG_FD;
-    spi2_handle.SPIConfig.SPI_SclkSpeed = SPI_SCLK_SPEED_DIV8;
+    spi2_handle.SPIConfig.SPI_SclkSpeed = SPI_SCLK_SPEED_DIV32;
     spi2_handle.SPIConfig.SPI_DFF = SPI_DFF_8BITS;
     spi2_handle.SPIConfig.SPI_CPOL = SPI_CPOL_LOW;
     spi2_handle.SPIConfig.SPI_CPHA = SPI_CPHA_LOW;
-    spi2_handle.SPIConfig.SPI_SSM = SPI_SSM_DI; // hardware slave management
+    spi2_handle.SPIConfig.SPI_SSM = SPI_SSM_DI; // hardware slave management enabled for NSS pin
     SPI_Init(&spi2_handle);
 }
 
@@ -64,39 +65,39 @@ void GPIO_Button_Init(){
     b1_gpio_handle.GPIO_PinConfig.GPIO_PinMode = GPIO_IN_MODE;
     b1_gpio_handle.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_HIGH;
     b1_gpio_handle.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD;
+//    GPIO_PeriClockControl(GPIOA, ENABLE);
     GPIO_Init(&b1_gpio_handle);
 }
 
 int main() {
     char user_data[] = "Hello World";
-    // enable button B1
-    GPIO_Button_Init();
-
     // enable GPIO pins as SPI alt function
     SPI2_GPIOInits();
 
     // initialize SPI2, this needs to be done while SPI2 is disabled, CR1->SPE set to 0 (default)
     SPI2_Inits();
 
-    // enable SSOE
+    GPIO_Button_Init();
+
     SPI_SSOEConfig(SPI2, ENABLE);
 
-    while(1){
-        while (!GPIO_ReadFromInputPin(GPIOA, GPIO_PIN_NO_0));
+    while (1) {
+        while(!GPIO_ReadFromInputPin(GPIOA, GPIO_PIN_NO_0));
 
-        delay(10);
-        // enable SPI2, CR1->SPE set to 1
+        delay();
+
         SPI_PeriControl(SPI2, ENABLE);
 
-        // first send data length info
-        uint8_t data_len = strlen(user_data);
-        SPI_Send_Data(SPI2, &data_len, 1);
+        uint8_t dataLen = strlen(user_data);
+        SPI_Send_Data(SPI2, &dataLen, 1);
 
+        // send data
         SPI_Send_Data(SPI2, (uint8_t *) user_data, strlen(user_data));
 
-        // confirm SPI is not busy
-        while(SPI_GetFlagStatus(SPI2, SPI_BUSY_FLAG))
+        while (SPI_GetFlagStatus(SPI2, SPI_BUSY_FLAG));
+
         // disable SPI2
         SPI_PeriControl(SPI2, DISABLE);
     }
+
 }

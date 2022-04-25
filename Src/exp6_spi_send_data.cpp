@@ -67,9 +67,10 @@ int main() {
     // enable SPI2, CR1->SPE set to 1
     SPI_PeriControl(SPI2, ENABLE);
 
-    // confirm SPI is not busy
-    while(SPI_GetFlagStatus(SPI2, SPI_BUSY_FLAG))
-        // disable SPI2
+    // send data
+    SPI_Send_Data(SPI2, (uint8_t*)user_data, strlen(user_data));
+
+    // disable SPI2
     SPI_PeriControl(SPI2, DISABLE);
 
     while(1) {
