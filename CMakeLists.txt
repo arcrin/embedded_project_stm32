@@ -22,7 +22,7 @@ set(PROJECT_FILES
 #        modules/epaper/Fonts/fonts.h
 #        modules/epaper/GUI/GUI_Paint.cpp
 #        modules/epaper/GUI/GUI_Paint.h
-        Src/exp8_spi_cmd_handling.cpp
+        Src/exp5_gpio_interrupt_led_control.cpp
         stm32_startup.c
         )
 

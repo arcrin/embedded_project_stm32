@@ -356,9 +356,9 @@ void GPIO_IRQITConfig(uint8_t IRQNumber, uint8_t ENorDI) {
  * @Note			-
  ********************************************************/
 void GPIO_IRQPriorityConfig(uint8_t IRQNumber, uint8_t IRQPriority){
-    uint8_t ipr_register_offset = IRQPriority / 4;
-    uint8_t ipr_byte_offset = IRQPriority % 4;
-    *(NVIC_IPR_BASEADDR + (0x4 * ipr_register_offset)) |= ((IRQNumber << NO_PR_BIT_IMPLEMENTED) << (ipr_byte_offset * 8));
+    uint8_t ipr_register_offset = IRQNumber / 4;
+    uint8_t ipr_byte_offset = IRQNumber % 4;
+    *(NVIC_IPR_BASEADDR + (0x4 * ipr_register_offset)) |= ((IRQPriority << NO_PR_BIT_IMPLEMENTED) << (ipr_byte_offset * 8));
 }
 /********************************************************
  * @fn				- GPIO_IRQHandling
