@@ -8,10 +8,12 @@ set(CMAKE_C_STANDARD 99)
 
 set(PROJECT_FILES
         drivers/Inc/stm32f407xx.h
+        drivers/Src/stm32f407xx.cpp
         drivers/Inc/stm32f407xx_gpio_driver.h
         drivers/Inc/stm32f407xx_spi_driver.h
         drivers/Src/stm32f407xx_gpio_driver.cpp
         drivers/Src/stm32f407xx_spi_driver.cpp
+        modules/epaper.h
 #        modules/epaper/Inc/EPD_2in66.h
 #        modules/epaper/Src/EPD_2in66.cpp
 #        modules/epaper/Fonts/font8.cpp
@@ -22,7 +24,7 @@ set(PROJECT_FILES
 #        modules/epaper/Fonts/fonts.h
 #        modules/epaper/GUI/GUI_Paint.cpp
 #        modules/epaper/GUI/GUI_Paint.h
-        Src/exp5_gpio_interrupt_led_control.cpp
+        Src/exp1_toggle_push_pull_led.cpp
         stm32_startup.c
         )
 
@@ -33,10 +35,6 @@ add_executable(${EXECUTABLE} ${PROJECT_FILES})
 target_include_directories(${EXECUTABLE} PRIVATE
         drivers/Inc
         drivers/Src
-        modules/epaper/Inc
-        modules/epaper/src
-        modules/epaper/Fonts
-        modules/epaper/GUI
         Src
         )
 

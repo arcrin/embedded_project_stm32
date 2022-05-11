@@ -25,6 +25,7 @@ int main() {
 
     while (1) {
         // the led will toggle with very low intensity, the internal pull-up resistor is too high
+//        HAL_Delay(1000);
         delay();
         GPIO_ToggleOutputPin(led_gpio_handle.pGPIOx, GPIO_PIN_NO_12);
     }

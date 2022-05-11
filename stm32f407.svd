@@ -16685,7 +16685,7 @@ xs:noNamespaceSchemaLocation="CMSIS-SVD_Schema_1_1.xsd">
             </field>
             <field>
               <name>DELAY</name>
-              <description>Delay between 2 sampling
+              <description>HAL_Delay between 2 sampling
               phases</description>
               <bitOffset>8</bitOffset>
               <bitWidth>4</bitWidth>

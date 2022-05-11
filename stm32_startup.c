@@ -35,7 +35,7 @@ void PVD_IRQHandler 				(void) __attribute__ ((weak, alias("Default_Handler")));
 void TAMP_STAMP_IRQHandler 			(void) __attribute__ ((weak, alias("Default_Handler")));
 void RTC_WKUP_IRQHandler 			(void) __attribute__ ((weak, alias("Default_Handler")));
 void RCC_IRQHandler 				(void) __attribute__ ((weak, alias("Default_Handler")));
-void EXTI0_IRQHandler               (void) __attribute__ ((weak, alias("Default_Handler")));;
+void EXTI0_IRQHandler               (void) __attribute__ ((weak, alias("Default_Handler")));
 void EXTI1_IRQHandler 				(void) __attribute__ ((weak, alias("Default_Handler")));
 void EXTI2_IRQHandler 				(void) __attribute__ ((weak, alias("Default_Handler")));
 void EXTI3_IRQHandler 				(void) __attribute__ ((weak, alias("Default_Handler")));

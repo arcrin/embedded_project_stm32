@@ -23,6 +23,6 @@ int main() {
 
     while(1){
         GPIO_ToggleOutputPin(led_gpio_handle.pGPIOx, led_gpio_handle.GPIO_PinConfig.GPIO_PinNumber);
-        delay();
+        HAL_Delay(500);
     }
 }

@@ -37,6 +37,7 @@ void delay(void)
 
 void SPI2_GPIOInits(void){
     GPIO_Handle_t SPI_Pins;
+    SPI_Pins.pGPIOx = GPIOB;
     SPI_Pins.GPIO_PinConfig.GPIO_PinMode = GPIO_ALTFn_MODE;
     SPI_Pins.GPIO_PinConfig.GPIO_PinAltFunMode = 5;
     SPI_Pins.GPIO_PinConfig.GPIO_PinOPType  = GPIO_OP_TYPE_PP;

@@ -337,4 +337,22 @@ typedef struct{
 #define FLAG_RESET      RESET
 #define FLAG_SET        SET
 
+/*
+ * HAL_Delay
+ */
+
+#define HAL_MAX_DELAY      0xFFFFFFFFU
+extern _vo uint32_t uwTick;
+
+typedef enum{
+    HAL_TICK_FREQ_10HZ          = 100U,
+    HAL_TICK_FREQ_100HZ         = 10U,
+    HAL_TICK_FREQ_1KHZ          = 1U,
+    HAL_TICK_FREQ_DEFAULT       = HAL_TICK_FREQ_1KHZ
+}HAL_TickFreqTypeDef;
+
+uint32_t Get_Tick();
+
+void HAL_Delay(uint32_t Delay);
+
 #endif //MCU1_STM32F407XX_H
