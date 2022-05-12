@@ -84,6 +84,8 @@
 #define SPI2_BASEADDR       (APB1PERIPH_BASE + 0x3800)
 #define SPI3_BASEADDR       (APB1PERIPH_BASE + 0x3C00)
 
+#define TIM6_BASEADDR       (APB1PERIPH_BASE + 0x1000)
+
 /*
  * Peripherals on ABP2 bus
  */
@@ -189,6 +191,21 @@ typedef struct{
     _vo uint32_t I2SPR;
 }SPI_RegDef_t, *pSPI_RegDef_t;
 
+/*
+ * Basic timer register structure
+ */
+typedef struct {
+    _vo uint32_t CR1;
+    _vo uint32_t CR2;
+    uint32_t RESERVED;
+    _vo uint32_t DIER;
+    _vo uint32_t SR;
+    _vo uint32_t EGR;
+    uint32_t RESERVED1[3];
+    _vo uint32_t CNT;
+    _vo uint32_t PSC;
+    _vo uint32_t ARR;
+}Basic_TIM_RegDef_t, *pBasic_TIM_RegDef_t;
 
 /*
  * GPIO definitions
@@ -286,6 +303,13 @@ typedef struct{
 
 #define SYSCFG_PCLK_DI()    RCC->APB2ENR &= ~(1 << 14)
 
+/*
+ * Timer clock macros
+ */
+#define TIM6_PCLK_EN()      RCC->APB1ENR |= (1 << 4)
+
+#define TIM6_PCLK_DI()      RCC->APB1ENR &= ~(1 << 4)
+
 
 /*
  * GPIO reset macro
@@ -310,6 +334,10 @@ typedef struct{
 #define SPI2_REG_RESET()        do{RCC->APB1RSTR |= (1<<14); RCC->APB1RSTR &= ~(1<<14);} while(0)
 #define SPI3_REG_RESET()        do{RCC->APB1RSTR |= (1<<15); RCC->APB1RSTR &= ~(1<<15);} while(0)
 
+/*
+ * Timer reset macro
+ */
+#define TIM6_REG_RESET()        do{RCC->APB1RSTR |= (1<<4); RCC->APB1RSTR &= ~(1<<4);} while(0)
 
 /*
  * IRQ numbers
