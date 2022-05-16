@@ -10,6 +10,7 @@
 #include <cstdint>
 
 #define _vo     volatile
+#define _ro     volatile const
 /*
  * Base memory address
  */
@@ -45,7 +46,7 @@
 
 #define NVIC_IPR_BASEADDR       ((_vo uint32_t*)0xE000E400)
 
-#define NO_PR_BIT_IMPLEMENTED   4
+#define NVIC_PRIORITY_BITS   4
 
 
 
@@ -352,6 +353,60 @@ typedef struct {
 #define IRQ_NO_SPI1         35
 #define IRQ_NO_SPI2         36
 #define IRQ_NO_SPI3         51
+
+/*
+ * NVIC register structure
+ */
+typedef struct {
+    _vo uint32_t ISER[8];
+    uint32_t RESERVED0[24];
+    _vo uint32_t ICER[8];
+    uint32_t RESERVED1[24];
+    _vo uint32_t ISPR[8];
+    uint32_t RESERVED2[24];
+    _vo uint32_t ICPR[8];
+    uint32_t RESERVED3[24];
+    _vo uint32_t IABR[8];
+    uint32_t RESERVED4[56];
+    _vo uint32_t IP[240];
+    uint32_t RESERVED5[644];
+    _vo uint32_t STIR;
+}NVIC_RegDef_t, *pNVIC_RegDef_t;
+
+#define NVIC        ((pNVIC_RegDef_t) 0xE000E100) // NOTE: Double parenthesis is NECESSARY
+
+/*
+ * NVIC functions
+ */
+void NVIC_SetPriority(int8_t IRQn, uint8_t priority);
+
+/*
+ * SCB register structure
+ */
+typedef struct {
+    _ro uint32_t CPUID;
+    _vo uint32_t ICSR;
+    _vo uint32_t VTOR;
+    _vo uint32_t AIRCR;
+    _vo uint32_t SCR;
+    _vo uint32_t CCR;
+    _vo uint8_t SHPR[12]; /* !<Offset  0x18 (R/W) System Handlers Priority Registers (4-7, 8-11, 12-15)*/
+    _vo uint32_t SHCSR;
+    _vo uint32_t CFSR;
+    _vo uint32_t HFSR;
+    uint32_t RESERVED;
+    _vo uint32_t MMAR;
+    _vo uint32_t BFAR;
+    _vo uint32_t AFSR;
+}SCB_RegDef_t, *pSCB_RegDef_t;
+
+#define SCB     ((pSCB_RegDef_t) 0xE000ED00)
+
+/*
+ * System control block macros (SCB)
+ */
+#define Enable_SysTick()        SCB->SHCSR |= 0x1 << 11;
+
 
 /*
  * Generic macros

@@ -46,7 +46,7 @@ target_compile_options(${EXECUTABLE} PRIVATE
         -mfloat-abi=soft
         -Wall
         -fno-exceptions
-        $<$<CONFIG:Debug>:-o0>
+        $<$<CONFIG:Debug>:-O0>
         )
 
 target_link_options(${EXECUTABLE} PRIVATE

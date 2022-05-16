@@ -8,8 +8,14 @@ _vo uint32_t uwTick;
 
 HAL_TickFreqTypeDef uwTickFreq = HAL_TICK_FREQ_DEFAULT;
 
-void TIM4_IRQHandler(){
-
+void NVIC_SetPriority(int8_t IRQn, uint8_t priority){
+    if (IRQn >= 0){
+        NVIC->IP[IRQn] = (priority << (uint8_t)((8 - NVIC_PRIORITY_BITS)) & (uint32_t)0xFFUL);
+    }
+    else
+    {
+        SCB->SHPR[(IRQn & 0xF) - 4] = (priority << (uint8_t)((8 - NVIC_PRIORITY_BITS)) & (uint32_t)0xFFUL);
+    }
 }
 
 uint32_t Get_Tick(){
@@ -26,4 +32,10 @@ void HAL_Delay(uint32_t Delay){
     }
 
     while ((Get_Tick() - tickstart) < wait);
+}
+
+extern "C"{
+    void SysTick_Handler() {
+        uwTick += 1;
+    }
 }

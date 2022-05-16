@@ -10,6 +10,7 @@ void delay(){
 }
 
 int main() {
+    NVIC_SetPriority(-1, 0);
     GPIO_Handle_t led_gpio_handle; // pGPIO_Handle_t wouldn't work here. It will be initialized as a NULL pointer, and content will be corrupted
     led_gpio_handle.pGPIOx = GPIOD;
     led_gpio_handle.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_12;
@@ -18,11 +19,15 @@ int main() {
     led_gpio_handle.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_PP;
     led_gpio_handle.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD; // pin output type is already push-pull, no need for pu/pd resistors
 
+
+    Enable_SysTick();
 //    GPIO_PeriClockControl(led_gpio_handle.pGPIOx, ENABLE);
     GPIO_Init(&led_gpio_handle);
 
     while(1){
         GPIO_ToggleOutputPin(led_gpio_handle.pGPIOx, led_gpio_handle.GPIO_PinConfig.GPIO_PinNumber);
-        HAL_Delay(500);
+//        HAL_Delay(500);
+
+        delay();
     }
 }
