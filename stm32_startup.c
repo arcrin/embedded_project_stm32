@@ -12,6 +12,7 @@ extern uint32_t _edata;
 extern uint32_t _la_data;
 extern uint32_t _sbss;
 extern uint32_t _ebss;
+extern uint32_t uwTick;
 
 //prototype of main
 int main(void);
@@ -29,7 +30,7 @@ void UsageFault_Handler 			(void) __attribute__ ((weak, alias("Default_Handler")
 void SVC_Handler 					(void) __attribute__ ((weak, alias("Default_Handler")));
 void DebugMon_Handler 				(void) __attribute__ ((weak, alias("Default_Handler")));
 void PendSV_Handler   				(void) __attribute__ ((weak, alias("Default_Handler")));
-void SysTick_Handler  				(void) __attribute__ ((weak, alias("Default_Handler")));
+void SysTick_Handler                (void) __attribute__ ((weak, alias("Default_Handler")));
 void WWDG_IRQHandler 				(void) __attribute__ ((weak, alias("Default_Handler")));
 void PVD_IRQHandler 				(void) __attribute__ ((weak, alias("Default_Handler")));
 void TAMP_STAMP_IRQHandler 			(void) __attribute__ ((weak, alias("Default_Handler")));
@@ -218,6 +219,7 @@ void Default_Handler(void)
 {
     while(1);
 };
+
 
 void HardFault_Handler(void)
 {

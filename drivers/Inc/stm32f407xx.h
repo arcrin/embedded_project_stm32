@@ -403,6 +403,18 @@ typedef struct {
 #define SCB     ((pSCB_RegDef_t) 0xE000ED00)
 
 /*
+ * Systick register structure
+ */
+typedef struct {
+    _vo uint32_t CTRL;
+    _vo uint32_t LOAD;
+    _vo uint32_t VAL;
+    _ro uint32_t CALIB;
+}Systick_RegDef_t, *pSYstick_RegDef_t;
+
+#define SysTick     ((pSYstick_RegDef_t) 0xE000E010)
+
+/*
  * System control block macros (SCB)
  */
 #define Enable_SysTick()        SCB->SHCSR |= 0x1 << 11;
@@ -420,22 +432,13 @@ typedef struct {
 #define FLAG_RESET      RESET
 #define FLAG_SET        SET
 
-/*
- * HAL_Delay
- */
+#define disable_irq()       do{asm volatile("cpsid i");} while(0)
+#define enable_irq()        do{asm volatile("cpsie i");} while(0)
 
-#define HAL_MAX_DELAY      0xFFFFFFFFU
-extern _vo uint32_t uwTick;
 
-typedef enum{
-    HAL_TICK_FREQ_10HZ          = 100U,
-    HAL_TICK_FREQ_100HZ         = 10U,
-    HAL_TICK_FREQ_1KHZ          = 1U,
-    HAL_TICK_FREQ_DEFAULT       = HAL_TICK_FREQ_1KHZ
-}HAL_TickFreqTypeDef;
+extern volatile uint32_t sysTick;
 
-uint32_t Get_Tick();
+uint32_t get_tick();
 
-void HAL_Delay(uint32_t Delay);
-
+void delay(uint32_t delay_in_ms);
 #endif //MCU1_STM32F407XX_H

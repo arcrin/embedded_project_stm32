@@ -5,13 +5,11 @@
 #include "stm32f407xx_gpio_driver.h"
 #include <cstdint>
 
-void delay(){
-    for (uint32_t i = 0; i < 500000; i++);
-}
-
+GPIO_Handle_t led_gpio_handle; // pGPIO_Handle_t wouldn't work here. It will be initialized as a NULL pointer, and content will be corrupted
+GPIO_Handle_t pd2_gpio_handle;
 int main() {
     NVIC_SetPriority(-1, 0);
-    GPIO_Handle_t led_gpio_handle; // pGPIO_Handle_t wouldn't work here. It will be initialized as a NULL pointer, and content will be corrupted
+
     led_gpio_handle.pGPIOx = GPIOD;
     led_gpio_handle.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_12;
     led_gpio_handle.GPIO_PinConfig.GPIO_PinMode = GPIO_OUT_MODE;
@@ -19,15 +17,30 @@ int main() {
     led_gpio_handle.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_PP;
     led_gpio_handle.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD; // pin output type is already push-pull, no need for pu/pd resistors
 
+    pd2_gpio_handle.pGPIOx = GPIOD;
+    pd2_gpio_handle.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_2;
+    pd2_gpio_handle.GPIO_PinConfig.GPIO_PinMode = GPIO_OUT_MODE;
+    pd2_gpio_handle.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_HIGH;
+    pd2_gpio_handle.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_PP;
+    pd2_gpio_handle.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD;
 
-    Enable_SysTick();
-//    GPIO_PeriClockControl(led_gpio_handle.pGPIOx, ENABLE);
+    disable_irq();
+    SysTick->CTRL = 0UL;
+    SysTick->LOAD |= 16000;
+    SysTick->VAL = 0UL;
+    SysTick->CTRL = 7;
+    enable_irq();
+
     GPIO_Init(&led_gpio_handle);
-
+    GPIO_Init(&pd2_gpio_handle);
     while(1){
+//        GPIO_ToggleOutputPin(pd2_gpio_handle.pGPIOx, pd2_gpio_handle.GPIO_PinConfig.GPIO_PinNumber);
         GPIO_ToggleOutputPin(led_gpio_handle.pGPIOx, led_gpio_handle.GPIO_PinConfig.GPIO_PinNumber);
-//        HAL_Delay(500);
-
-        delay();
+        delay(1000);
     }
 }
+
+
+
+
+
