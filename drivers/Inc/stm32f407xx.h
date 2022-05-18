@@ -381,7 +381,7 @@ typedef struct {
 void NVIC_SetPriority(int8_t IRQn, uint8_t priority);
 
 /*
- * SCB register structure
+ * SCB register structure and related macros
  */
 typedef struct {
     _ro uint32_t CPUID;
@@ -402,6 +402,8 @@ typedef struct {
 
 #define SCB     ((pSCB_RegDef_t) 0xE000ED00)
 
+#define Enable_SysTick()        SCB->SHCSR |= 0x1 << 11;
+
 /*
  * Systick register structure
  */
@@ -410,14 +412,19 @@ typedef struct {
     _vo uint32_t LOAD;
     _vo uint32_t VAL;
     _ro uint32_t CALIB;
-}Systick_RegDef_t, *pSYstick_RegDef_t;
+}Systick_RegDef_t, *pSystick_RegDef_t;
 
-#define SysTick     ((pSYstick_RegDef_t) 0xE000E010)
+#define SysTick     ((pSystick_RegDef_t) 0xE000E010)
 
-/*
- * System control block macros (SCB)
- */
-#define Enable_SysTick()        SCB->SHCSR |= 0x1 << 11;
+extern volatile uint32_t sysTick_count;
+
+void SysTick_Init(uint32_t load_value);
+
+uint32_t get_tick();
+
+void delay(uint32_t delay_in_ms);
+
+
 
 
 /*
@@ -435,10 +442,7 @@ typedef struct {
 #define disable_irq()       do{asm volatile("cpsid i");} while(0)
 #define enable_irq()        do{asm volatile("cpsie i");} while(0)
 
+#include "stm32f407xx_gpio_driver.h"
+#include "stm32f407xx_spi_driver.h"
 
-extern volatile uint32_t sysTick;
-
-uint32_t get_tick();
-
-void delay(uint32_t delay_in_ms);
 #endif //MCU1_STM32F407XX_H

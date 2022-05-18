@@ -1,13 +1,13 @@
 //
 // Created by wbai on 1/5/2022.
 //
-#include <cstdint>
-//#ifdef MCU1_STM32F407XX_H
-#include "stm32f407xx.h"
-//#endif
 
 #ifndef MCU1_STM32F407_SPI_DRIVER_H
 #define MCU1_STM32F407_SPI_DRIVER_H
+
+
+#include <cstdint>
+#include "stm32f407xx.h"
 
 /*
  * Configuration structure for SPIx peripheral

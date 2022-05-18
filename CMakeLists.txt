@@ -14,6 +14,7 @@ set(PROJECT_FILES
         drivers/Src/stm32f407xx_gpio_driver.cpp
         drivers/Src/stm32f407xx_spi_driver.cpp
         modules/epaper.h
+        modules/epaper.cpp
 #        modules/epaper/Inc/EPD_2in66.h
 #        modules/epaper/Src/EPD_2in66.cpp
 #        modules/epaper/Fonts/font8.cpp
@@ -24,7 +25,7 @@ set(PROJECT_FILES
 #        modules/epaper/Fonts/fonts.h
 #        modules/epaper/GUI/GUI_Paint.cpp
 #        modules/epaper/GUI/GUI_Paint.h
-        Src/exp1_toggle_push_pull_led.cpp
+        Src/exp2_toggle_open_drain_led.cpp
         stm32_startup.c
         )
 

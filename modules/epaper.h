@@ -5,6 +5,7 @@
 #ifndef MCU1_EPAPER_H
 #define MCU1_EPAPER_H
 #include "stm32f407xx_gpio_driver.h"
+#include "stm32f407xx_spi_driver.h"
 
 #define RST_Pin             GPIO_PIN_NO_8
 #define RST_GPIO_Port       GPIOA
@@ -30,8 +31,28 @@
 #define DEV_Digital_Read(_pin) GPIO_ReadFromInputPin(_pin)
 
 /*
- *
+ * delay
  */
+#define DEV_Delay_ms(__xms)     delay(__xms)
+
+void DEV_SPI_WriteByte(uint8_t value);
+
+int DEV_Module_Init();
+
+void DEV_Module_Exit();
+
+
+/*
+ * 2.66 inch epaper display specific
+ */
+#define EPD_2IN66B_WIDTH        152
+#define EPD_2IN66B_HEIGHT       296
+
+void EPD_2IN66B_Init();
+void EPD_2IN66B_Display(uint8_t *ImageBlack, uint8_t *ImageRed);
+void EPD_2IN66B_Init();
+void EPD_2IN66B_Init();
+
 
 
 #endif //MCU1_EPAPER_H

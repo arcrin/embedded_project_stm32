@@ -4,7 +4,7 @@
 #include "stm32f407xx.h"
 #include <cstdint>
 
-_vo uint32_t sysTick;
+_vo uint32_t sysTick_count;
 
 void NVIC_SetPriority(int8_t IRQn, uint8_t priority){
     if (IRQn >= 0){
@@ -16,8 +16,16 @@ void NVIC_SetPriority(int8_t IRQn, uint8_t priority){
     }
 }
 
+void SysTick_Init(uint32_t load_value){
+    SysTick->CTRL = 0UL;
+    //TODO: need to check load_value < 0xFFFFFF
+    SysTick->LOAD = load_value;
+    SysTick->VAL = 0UL;
+    SysTick->CTRL = 7;
+}
+
 uint32_t get_tick(){
-    return sysTick;
+    return sysTick_count;
 }
 
 void delay(uint32_t delay_in_ms){
@@ -33,6 +41,6 @@ void delay(uint32_t delay_in_ms){
 
 extern "C"{
     void SysTick_Handler(){
-        sysTick++;
+        sysTick_count++;
     }
 }

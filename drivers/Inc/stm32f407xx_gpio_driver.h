@@ -6,6 +6,8 @@
  * this file contains driver specific data, such as:
  * GPIO handle and configuration structures that can be used by user application
  */
+#ifndef MCU1_STM32F407_GPIO_DRIVER_H
+#define MCU1_STM32F407_GPIO_DRIVER_H
 
 #include "stm32f407xx.h"
 typedef struct { // haven't seen this being used in pointer form, my guess is that there is no need to alter the value of this struct
@@ -105,6 +107,8 @@ void GPIO_ToggleOutputPin(pGPIO_RegDef_t GPIOx, uint8_t PinNumber);
 void GPIO_IRQITConfig(uint8_t IRQNumber, uint8_t ENorDI);
 void GPIO_IRQPriorityConfig(uint8_t IRQNumber, uint8_t Priority);
 void GPIO_IRQHandling(uint8_t PinNumber);
+
+#endif
 
 
 
