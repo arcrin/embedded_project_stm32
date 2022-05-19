@@ -14,10 +14,10 @@
  * Alternate function: AF5
  */
 
-void delay(void)
-{
-    for(uint32_t i = 0 ; i < 500000 ; i ++);
-}
+//void delay(void)
+//{
+//    for(uint32_t i = 0 ; i < 500000 ; i ++);
+//}
 
 void SPI2_GPIOInits(void){
     GPIO_Handle_t SPIPins;
@@ -52,7 +52,7 @@ void SPI2_Inits(){
     spi2_handle.SPIConfig.SPI_BusConfig = SPI_BUS_CONFIG_FD;
     spi2_handle.SPIConfig.SPI_SclkSpeed = SPI_SCLK_SPEED_DIV32;
     spi2_handle.SPIConfig.SPI_DFF = SPI_DFF_8BITS;
-    spi2_handle.SPIConfig.SPI_CPOL = SPI_CPOL_LOW;
+    spi2_handle.SPIConfig.SPI_CPOL = SPI_CPOL_HIGH;
     spi2_handle.SPIConfig.SPI_CPHA = SPI_CPHA_LOW;
     spi2_handle.SPIConfig.SPI_SSM = SPI_SSM_DI; // hardware slave management enabled for NSS pin
     SPI_Init(&spi2_handle);
@@ -63,7 +63,7 @@ void GPIO_Button_Init(){
     b1_gpio_handle.pGPIOx = GPIOA;
     b1_gpio_handle.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_0;
     b1_gpio_handle.GPIO_PinConfig.GPIO_PinMode = GPIO_IN_MODE;
-    b1_gpio_handle.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_HIGH;
+    b1_gpio_handle.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_LOW;
     b1_gpio_handle.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD;
 //    GPIO_PeriClockControl(GPIOA, ENABLE);
     GPIO_Init(&b1_gpio_handle);
@@ -81,10 +81,14 @@ int main() {
 
     SPI_SSOEConfig(SPI2, ENABLE);
 
+//    SPI_PeriControl(SPI2, ENABLE);
+
+    SysTick_Init(16000);
+
     while (1) {
         while(!GPIO_ReadFromInputPin(GPIOA, GPIO_PIN_NO_0));
 
-        delay();
+        delay(500);
 
         SPI_PeriControl(SPI2, ENABLE);
 

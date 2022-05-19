@@ -69,7 +69,7 @@ typedef struct {
  * @SPI_CPOL (clock polarity, decides the idle state)
  */
 #define SPI_CPOL_LOW    0
-#define SPI_CPLO_HITH   1
+#define SPI_CPOL_HIGH   1
 
 /*
  * @SPI_CPHA (clock phase, decides the data capture transition)

@@ -25,7 +25,7 @@ set(PROJECT_FILES
 #        modules/epaper/Fonts/fonts.h
 #        modules/epaper/GUI/GUI_Paint.cpp
 #        modules/epaper/GUI/GUI_Paint.h
-        Src/exp2_toggle_open_drain_led.cpp
+        Src/exp9_epaper.cpp
         stm32_startup.c
         )
 
@@ -36,6 +36,7 @@ add_executable(${EXECUTABLE} ${PROJECT_FILES})
 target_include_directories(${EXECUTABLE} PRIVATE
         drivers/Inc
         drivers/Src
+        modules
         Src
         )
 
