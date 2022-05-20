@@ -64,6 +64,7 @@ void EPD_SPI2_Init(){
     SPIPins.GPIO_PinConfig.GPIO_PinMode = GPIO_ALTFn_MODE;
     SPIPins.GPIO_PinConfig.GPIO_PinAltFunMode = 5;
     SPIPins.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_PP;
+    SPIPins.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_PIN_PU;
     SPIPins.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_HIGH;
 
     // NSS
@@ -82,12 +83,14 @@ void EPD_SPI2_Init(){
     spi2_handle.pSPIx = SPI2;
     spi2_handle.SPIConfig.SPI_DeviceMode = SPI_DEVICE_MODE_MASTER;
     spi2_handle.SPIConfig.SPI_BusConfig = SPI_BUS_CONFIG_FD;
-    spi2_handle.SPIConfig.SPI_SclkSpeed = SPI_SCLK_SPEED_DIV2;
+    spi2_handle.SPIConfig.SPI_SclkSpeed = SPI_SCLK_SPEED_DIV32;
     spi2_handle.SPIConfig.SPI_DFF = SPI_DFF_8BITS;
     spi2_handle.SPIConfig.SPI_CPOL = SPI_CPOL_LOW;
     spi2_handle.SPIConfig.SPI_CPHA = SPI_CPHA_LOW;
+    spi2_handle.SPIConfig.SPI_SSM = SPI_SSM_EN;
     SPI_Init(&spi2_handle);
-    SPI_SSOEConfig(SPI2, DISABLE);
+    SPI_SSIConfig(SPI2, ENABLE);
+//    SPI_SSOEConfig(SPI2, DISABLE);
 //    SPI_PeriControl(SPI2, ENABLE);
 }
 
@@ -140,7 +143,7 @@ static void EPD_2IN66_SetLUA(){
     EPD_2IN66_ReadBusy();
 }
 
-void EPD_2IN66B_Init(){
+void EPD_2IN66_Init(){
     EPD_2IN66_Reset();
     EPD_2IN66_ReadBusy();
     EPD_2IN66_SendCommand(0x12); // soft reset
@@ -237,7 +240,7 @@ void EPD_2IN66_Display(uint8_t *Image)
     EPD_2IN66_TurnOnDisplay();
 }
 
-void EPD_2IN66B_Sleep(){
+void EPD_2IN66_Sleep(){
     EPD_2IN66_SendCommand(0x10);
     EPD_2IN66_SendData(0x01);
 }
@@ -247,6 +250,21 @@ void DEV_SPI_WriteByte(uint8_t value){
     SPI_Send_Data(SPI2, &value, 1);
     while(SPI_GetFlagStatus(SPI2, SPI_BUSY_FLAG));
     SPI_PeriControl(SPI2, DISABLE);
+}
+
+int DEV_Module_Init(){
+    DEV_Digital_Write(EPD_DC_PIN, 0);
+    DEV_Digital_Write(EPD_CS_PIN, 0);
+    DEV_Digital_Write(EPD_RST_PIN, 1);
+    return 0;
+}
+
+void DEV_Module_Exit(){
+    DEV_Digital_Write(EPD_DC_PIN, 0);
+    DEV_Digital_Write(EPD_CS_PIN, 0);
+
+    // close 5v?
+    DEV_Digital_Write(EPD_RST_PIN, 0);
 }
 
 #endif //MCU1_EXP7_EPAPER_CPP

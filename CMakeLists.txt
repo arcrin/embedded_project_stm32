@@ -15,6 +15,14 @@ set(PROJECT_FILES
         drivers/Src/stm32f407xx_spi_driver.cpp
         modules/epaper.h
         modules/epaper.cpp
+        modules/GUI_Paint.h
+        modules/GUI_Paint.cpp
+        modules/Fonts/fonts.h
+        modules/Fonts/font8.cpp
+        modules/Fonts/font12.cpp
+        modules/Fonts/font16.cpp
+        modules/Fonts/font20.cpp
+        modules/Fonts/font24.cpp
 #        modules/epaper/Inc/EPD_2in66.h
 #        modules/epaper/Src/EPD_2in66.cpp
 #        modules/epaper/Fonts/font8.cpp
@@ -37,6 +45,7 @@ target_include_directories(${EXECUTABLE} PRIVATE
         drivers/Inc
         drivers/Src
         modules
+        modules/Fonts
         Src
         )
 

@@ -52,7 +52,7 @@ void SPI2_Inits(){
     spi2_handle.SPIConfig.SPI_BusConfig = SPI_BUS_CONFIG_FD;
     spi2_handle.SPIConfig.SPI_SclkSpeed = SPI_SCLK_SPEED_DIV32;
     spi2_handle.SPIConfig.SPI_DFF = SPI_DFF_8BITS;
-    spi2_handle.SPIConfig.SPI_CPOL = SPI_CPOL_HIGH;
+    spi2_handle.SPIConfig.SPI_CPOL = SPI_CPOL_LOW;
     spi2_handle.SPIConfig.SPI_CPHA = SPI_CPHA_LOW;
     spi2_handle.SPIConfig.SPI_SSM = SPI_SSM_DI; // hardware slave management enabled for NSS pin
     SPI_Init(&spi2_handle);
@@ -88,7 +88,7 @@ int main() {
     while (1) {
         while(!GPIO_ReadFromInputPin(GPIOA, GPIO_PIN_NO_0));
 
-        delay(500);
+        delay(100);
 
         SPI_PeriControl(SPI2, ENABLE);
 

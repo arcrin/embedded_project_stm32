@@ -49,7 +49,7 @@ void DEV_Module_Exit();
 
 void EPD_2IN66_Init();
 
-void EPD_2IN66_Partial();
+void EPD_2IN66_Init_Partial();
 
 void EPD_2IN66_Clear();
 
