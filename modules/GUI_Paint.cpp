@@ -510,7 +510,7 @@ parameter:
     Color_Foreground : Select the foreground color
     Color_Background : Select the background color
 ******************************************************************************/
-#define ARRAY_LEN
+#define ARRAY_LEN 255
 void Paint_DrawNum(uint16_t Xpoint, uint16_t Ypoint, int32_t Number, sFONT *Font, uint16_t Color_Foreground,
                    uint16_t Color_Background){
     int16_t Num_Bit = 0, Str_Bit = 0;
@@ -564,4 +564,66 @@ void Paint_DrawTime(uint16_t Xstart, uint16_t Ystart, PAINT_TIME *pTime, sFONT *
     Paint_DrawChar(Xstart + Dx * 4 + Dx / 2 - Dx / 4, Ystart, ':'                    , Font, Color_Foreground, Color_Background);
     Paint_DrawChar(Xstart + Dx * 5                  , Ystart, value[pTime->Sec / 10] , Font, Color_Foreground, Color_Background);
     Paint_DrawChar(Xstart + Dx * 6                  , Ystart, value[pTime->Sec % 10] , Font, Color_Foreground, Color_Background);
+}
+
+/******************************************************************************
+function:	Display monochrome bitmap
+parameter:
+    image_buffer ：A picture data converted to a bitmap
+info:
+    Use a computer to convert the image into a corresponding array,
+    and then embed the array directly into Imagedata.cpp as a .c file.
+******************************************************************************/
+void Paint_DrawBitMap(const unsigned char *image_buffer){
+    uint16_t x, y;
+    uint32_t Addr = 0;
+
+    for (y = 0; y < Paint.HeightByte; y++) {
+        for (x = 0; x < Paint.WidthByte; x++) {
+            Addr = x + y * Paint.WidthByte;
+            Paint.Image[Addr] = (unsigned char) image_buffer[Addr];
+        }
+    }
+}
+/******************************************************************************
+function:	paste monochrome bitmap to a frame buff
+parameter:
+    image_buffer ：A picture data converted to a bitmap
+    xStart: The starting x coordinate
+    yStart: The starting y coordinate
+    imageWidth: Original image width
+    imageHeight: Original image height
+    flipColor: Whether the color is reversed
+info:
+    Use this function to paste image data into a buffer
+******************************************************************************/
+void Paint_DrawBitMap_Paste(const unsigned char *image_buffer, uint16_t Xstart, uint16_t Ystart,
+                            uint16_t imageWidth, uint16_t imageHeight, uint8_t flipColor){
+    uint8_t color, srcImage;
+    uint16_t x, y;
+    uint16_t width = (imageWidth % 8 == 0 ? imageWidth / 8 : imageWidth / 8 + 1);
+
+    for (y = 0; y < imageWidth; y++) {
+        for (x = 0; x < imageWidth; x++) {
+            srcImage = image_buffer[y * width + x / 8];
+            if (flipColor) {
+                color = (((srcImage << (x % 8) & 0x80) == 0) ? 1 : 0);
+            }else {
+                color = (((srcImage << (x % 8) & 0x80) == 0) ? 0 : 1);
+            }
+            Paint_SetPixel(x + Xstart, y + Ystart, color);
+        }
+    }
+}
+
+void Paint_DrawBitMap_Block(const unsigned char *image_buffer, uint8_t Region){
+    uint16_t x, y;
+    uint32_t Addr = 0;
+    for (y = 0; y < Paint.HeightByte; y++) {
+        for (x = 0; x < Paint.WidthByte; x++) {
+            Addr = x + y * Paint.WidthByte;
+            Paint.Image[Addr] = (unsigned char) image_buffer[Addr +
+                                                             (Paint.HeightByte) * Paint.WidthByte * (Region - 1)];
+        }
+    }
 }

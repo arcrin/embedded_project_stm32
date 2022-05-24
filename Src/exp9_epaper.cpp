@@ -6,6 +6,9 @@
 #include "GUI_Paint.h"
 
 
+extern const unsigned char gImage_100X50[];
+extern const unsigned char gImage_2in66[];
+
 void GPIO_Button_Init(){
     GPIO_Handle_t b1_gpio_handle;
     b1_gpio_handle.pGPIOx = GPIOA;
@@ -17,7 +20,7 @@ void GPIO_Button_Init(){
     GPIO_Init(&b1_gpio_handle);
 }
 
-void SPI2_GPIOInits(void){
+void SPI2_GPIOInits(){
     GPIO_Handle_t SPIPins;
     SPIPins.pGPIOx = GPIOB;
     SPIPins.GPIO_PinConfig.GPIO_PinMode = GPIO_ALTFn_MODE;
@@ -83,6 +86,7 @@ int main(){
         }
         Paint_NewImage(BlackImage, EPD_2IN66_WIDTH, EPD_2IN66_HEIGHT, 270, WHITE);
 
+#if 0
         //show image for array
         Paint_SelectImage(BlackImage);
         Paint_Clear(WHITE);
@@ -105,10 +109,58 @@ int main(){
         Paint_DrawString_EN(10, 0, "waveshare", &Font16, BLACK, WHITE);
         Paint_DrawString_EN(10, 20, "hello world", &Font12, WHITE, BLACK);
 
-//        Paint_DrawNum(10, 33, 123456789, &Font12, BLACK, WHITE);
-//        Paint_DrawNum(10, 50, 987654321, &Font16, WHITE, BLACK);
+        Paint_DrawNum(10, 33, 123456789, &Font12, BLACK, WHITE);
+        Paint_DrawNum(10, 50, 987654321, &Font16, WHITE, BLACK);
 
         EPD_2IN66_Display(BlackImage);
+#endif
+
+# if 1
+        Paint_SelectImage(BlackImage);
+        Paint_Clear(WHITE);
+        Paint_DrawBitMap(gImage_2in66);
+        Paint_DrawBitMap_Paste(gImage_100X50, 10, 10, 100, 50, TRUE);
+        EPD_2IN66_Display(BlackImage);
+        delay(2000);
+#endif
+
+#if 0
+        EPD_2IN66_Init_Partial();
+        Paint_SelectImage(BlackImage);
+
+        PAINT_TIME sPaint_time;
+        sPaint_time.Hour = 12;
+        sPaint_time.Min = 34;
+        sPaint_time.Sec = 56;
+        uint16_t num = 10;
+
+        for (;;){
+            sPaint_time.Sec = sPaint_time.Sec + 1;
+            if (sPaint_time.Sec == 60) {
+                sPaint_time.Min = sPaint_time.Min + 1;
+                sPaint_time.Sec = 0;
+                if (sPaint_time.Min == 60) {
+                    sPaint_time.Hour = sPaint_time.Hour + 1;
+                    sPaint_time.Min = 0;
+                    if (sPaint_time.Hour == 24) {
+                        sPaint_time.Hour = 0;
+                        sPaint_time.Min = 0;
+                        sPaint_time.Sec = 0;
+                    }
+                }
+            }
+            Paint_ClearWindows(180, 100, 296, 152, WHITE);
+            Paint_DrawTime(180, 110, &sPaint_time, &Font20, WHITE, BLACK);
+
+            num = num - 1;
+            if (num == 0) {
+                break;
+            }
+            EPD_2IN66_Display(BlackImage);
+            delay(500);
+        }
+        EPD_2IN66_Clear();
+#endif
 
 
 
