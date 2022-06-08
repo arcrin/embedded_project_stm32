@@ -27,7 +27,13 @@ typedef struct {
  */
 typedef struct {
     pSPI_RegDef_t   pSPIx;
-    SPI_Config_t SPIConfig;
+    SPI_Config_t    SPIConfig;
+    uint8_t         *pTxBuffer;
+    uint8_t         *pRxBuffer;
+    uint32_t        TxLen;
+    uint32_t        RxLen;
+    uint8_t         TxState;
+    uint8_t         RxState;
 }SPI_Handle_t, *pSPI_Handle_t;
 
 /*
@@ -44,8 +50,23 @@ typedef struct {
  */
 #define SPI_BUS_CONFIG_FD            1
 #define SPI_BUS_CONFIG_HD            2
-#define SPI_BUS_CONFIG_SIMP_RXONLY   3
+#define  SPI_BUS_CONFIG_SIMP_RXONLY  3
 //#define SPI_BUS_CONFIG_SIMP_TXONLY   this is just full duplex with RX pin (MISO) removed/ignored
+
+/*
+ * SPI application state
+ */
+#define SPI_READY                   0
+#define SPI_BUSY_IN_RX              1
+#define SPI_BUSY_IN_TX              2
+
+/*
+ * Possible SPI application events
+ */
+#define SPI_EVENT_TX_CMPLT          1
+#define SPI_EVENT_RX_CMPLT          2
+#define SPI_EVENT_OVR_ERR           3
+#define SPI_EVENT_CRC_ERR           4
 
 /*
  * @SPI_SclkSpeed (serial clock speed)
@@ -109,7 +130,7 @@ typedef struct {
 #define SPI_CR2_TXDMAEN     1 // tx buffer DMA enable
 #define SPI_CR2_SSOE        2 // SS ourput enable TODO: ?
 #define SPI_CR2_FRF         4 // frame format
-#define SPI_CR2_EERIE       5 // error interrupt enable
+#define SPI_CR2_ERRIE       5 // error interrupt enable
 #define SPI_CR2_RXNEIE      6 // rx_buffer_not_empty_interrupt enable
 #define SPI_CR2_TXEIE       7 // tx_buffer_empty_interrupt enable
 
@@ -153,14 +174,16 @@ void SPI_DeInit(pSPI_RegDef_t pSPIx);
  * Data send and receive
  */
 void SPI_Send_Data(pSPI_RegDef_t pSPIx, uint8_t *pTxBuffer, uint32_t Len); //Standard practice to set length as 32 bit
-void SPI_Received_Data(pSPI_RegDef_t pSPIx, uint8_t *pRxBuffer, uint32_t Len);
+void SPI_Receive_Data(pSPI_RegDef_t pSPIx, uint8_t *pRxBuffer, uint32_t Len);
 
+uint8_t SPI_Send_Data_IT(SPI_Handle_t *pSPIHandle, uint8_t *pTxBuffer, uint32_t Len); //Standard practice to set length as 32 bit
+uint8_t SPI_Receive_Data_IT(SPI_Handle_t *pSpiHandle, uint8_t *pRxBuffer, uint32_t Len);
 /*
  * IRQ configuration and ISR handling
  */
-void SPI_IRQITConfit(uint8_t IRQNumber, uint8_t ENorDI);
+void SPI_IRQITConfig(uint8_t IRQNumber, uint8_t ENorDI);
 
-void SPI_IRQPriorityConfig(uint8_t IEQNumber, uint8_t Priority);
+void SPI_IRQPriorityConfig(uint8_t IRQNumber, uint8_t Priority);
 
 void SPI_IRQHandling(pSPI_Handle_t pSpiHandle);
 
@@ -174,5 +197,17 @@ void SPI_SSIConfig(pSPI_RegDef_t pSPIx, uint8_t EnOrDi);
 void SPI_SSOEConfig(pSPI_RegDef_t pSPIx, uint8_t EnOrDi);
 
 uint8_t SPI_GetFlagStatus(pSPI_RegDef_t pSPIx, uint32_t FlagName);
+
+void SPI_ClearOVRFlag(SPI_RegDef_t *pSPIx);
+
+void SPI_CloseTransmission(SPI_Handle_t *pSPIHandle);
+
+void SPI_CloseReception(SPI_Handle_t *pSPIHandle);
+
+
+/*
+ * Application callback
+ */
+void SPI_ApplicationEventCallback(SPI_Handle_t *pSPIHandle, uint8_t AppEV);
 
 #endif //MCU1_STM32F407_SPI_DRIVER_H

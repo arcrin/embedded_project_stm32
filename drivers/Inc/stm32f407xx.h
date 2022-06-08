@@ -8,9 +8,13 @@
 #define MCU1_STM32F407XX_H
 
 #include <cstdint>
+#include <cstddef>
+#include <cstring>
+//#include <cstdio>
 
 #define _vo     volatile
 #define _ro     volatile const
+#define __weak  __attribute__((weak))
 /*
  * Base memory address
  */
@@ -353,6 +357,26 @@ typedef struct {
 #define IRQ_NO_SPI1         35
 #define IRQ_NO_SPI2         36
 #define IRQ_NO_SPI3         51
+
+/*
+ * macros for all the possible priority levels
+ */
+#define NVIC_IRQ_PRI0       0
+#define NVIC_IRQ_PRI1       1
+#define NVIC_IRQ_PRI2       2
+#define NVIC_IRQ_PRI3       3
+#define NVIC_IRQ_PRI4       4
+#define NVIC_IRQ_PRI5       5
+#define NVIC_IRQ_PRI6       6
+#define NVIC_IRQ_PRI7       7
+#define NVIC_IRQ_PRI8       8
+#define NVIC_IRQ_PRI9       9
+#define NVIC_IRQ_PRI10      10
+#define NVIC_IRQ_PRI11      11
+#define NVIC_IRQ_PRI12      12
+#define NVIC_IRQ_PRI13      13
+#define NVIC_IRQ_PRI14      14
+#define NVIC_IRQ_PRI15      15
 
 /*
  * NVIC register structure

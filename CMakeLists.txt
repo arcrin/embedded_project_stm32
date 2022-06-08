@@ -33,7 +33,7 @@ set(PROJECT_FILES
 #        modules/epaper/Fonts/fonts.h
 #        modules/epaper/GUI/GUI_Paint.cpp
 #        modules/epaper/GUI/GUI_Paint.h
-        Src/exp9_epaper.cpp
+        Src/exp9_spi_message_rcv_it.cpp
         stm32_startup.c
         )
 

@@ -50,7 +50,7 @@ typedef struct {
  */
 #define GPIO_IN_MODE        0
 #define GPIO_OUT_MODE       1
-#define GPIO_ALTFn_MODE     2
+#define GPIO_ALTFN_MODE     2
 #define GPIO_ANALOG_MODE    3
 #define GPIO_IT_FT_MODE     4   // Interrupt mode falling edge trigger
 #define GPIO_IT_RT_MODE     5   // Interrupt mode rising edge trigger

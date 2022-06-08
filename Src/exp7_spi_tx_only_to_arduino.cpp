@@ -22,7 +22,7 @@
 void SPI2_GPIOInits(void){
     GPIO_Handle_t SPIPins;
     SPIPins.pGPIOx = GPIOB;
-    SPIPins.GPIO_PinConfig.GPIO_PinMode = GPIO_ALTFn_MODE;
+    SPIPins.GPIO_PinConfig.GPIO_PinMode = GPIO_ALTFN_MODE;
     SPIPins.GPIO_PinConfig.GPIO_PinAltFunMode = 5;
     SPIPins.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_PP; // TODO: why push pull
     SPIPins.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_PIN_PU;

@@ -159,7 +159,7 @@ void GPIO_Init(pGPIO_Handle_t pGPIOHandle){
     pGPIOHandle->pGPIOx->OTYPER |=
             (pGPIOHandle->GPIO_PinConfig.GPIO_PinOPType << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
     //5. configure the al functionality
-    if (pGPIOHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_ALTFn_MODE) {
+    if (pGPIOHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_ALTFN_MODE) {
         uint8_t reg_level = pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber / 8;
         uint8_t reg_shift = pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber % 8;
         pGPIOHandle->pGPIOx->AFR[reg_level] &=
