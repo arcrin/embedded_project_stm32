@@ -160,4 +160,12 @@ void Paint_DrawNum(uint16_t Xpoint, uint16_t Ypoint, int32_t Number, sFONT *Font
 
 void Paint_DrawTime(uint16_t Xstart, uint16_t Ystart, PAINT_TIME *pTime, sFONT *Font, uint16_t Color_Foreground,
                     uint16_t Color_Background);
+
+// pic
+void Paint_DrawBitMap(const unsigned char *image_buffer);
+
+void Paint_DrawBitMap_Paste(const unsigned char *image_bugger, uint16_t Xstart, uint16_t Ystart,
+                            uint16_t imageWidth, uint16_t imageHeight, uint8_t flipColor);
+
+void Paint_DrawBitMap_Block(const unsigned char *image_buffer, uint8_t Region);
 #endif //MCU1_GUI_PAINT_H
