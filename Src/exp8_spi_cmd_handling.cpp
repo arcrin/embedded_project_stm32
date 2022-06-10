@@ -35,7 +35,7 @@ void delay(void)
  * ALT function mode: 5
  */
 
-void SPI2_GPIOInits(void){
+void SPI2_EPAPER_GPIOInits(void){
     GPIO_Handle_t SPI_Pins;
     SPI_Pins.pGPIOx = GPIOB;
     SPI_Pins.GPIO_PinConfig.GPIO_PinMode = GPIO_ALTFn_MODE;
@@ -127,13 +127,13 @@ int main(void){
         SPI_Send_Data(SPI2, &command_code, 1);
 
         // do dummy read to clear off the RXNE
-        SPI_Received_Data(SPI2, &dummy_read, 1);
+        SPI_Receive_Data(SPI2, &dummy_read, 1);
 
         // Send some dummy bits (1 byte) fetch the response from the slave
         SPI_Send_Data(SPI2, &dummy_write, 1);
 
         // read the ack byte received
-        SPI_Received_Data(SPI2, &ackbyte, 1);
+        SPI_Receive_Data(SPI2, &ackbyte, 1);
 
         if(SPI_VerifyResponse(ackbyte)){
             args[0] = ANALOG_PIN0;
@@ -142,7 +142,7 @@ int main(void){
             SPI_Send_Data(SPI2, args, 1); // sending one byte of
 
             // do dummy read to clear off the RXNE
-            SPI_Received_Data(SPI2, &dummy_read, 1);
+            SPI_Receive_Data(SPI2, &dummy_read, 1);
 
             // insert some delay so that can ready with the data
             delay();
@@ -151,7 +151,7 @@ int main(void){
             SPI_Send_Data(SPI2, &dummy_write, 1);
 
             uint8_t analog_read;
-            SPI_Received_Data(SPI2, &analog_read, 1);
+            SPI_Receive_Data(SPI2, &analog_read, 1);
         }
 
         // 3. CMD_LED_READ
@@ -168,7 +168,7 @@ int main(void){
         SPI_Send_Data(SPI2, &command_code, 1);
 
         // do dummy read to clear off the RXNE
-        SPI_Received_Data(SPI2, &dummy_read, 1);
+        SPI_Receive_Data(SPI2, &dummy_read, 1);
 
         if(SPI_VerifyResponse(ackbyte)){
             args[0] = LED_PIN;
@@ -177,7 +177,7 @@ int main(void){
             SPI_Send_Data(SPI2, args, 1); // sending one byte
 
             // do dummy read to clear off the RXNE
-            SPI_Received_Data(SPI2, &dummy_read, 1);
+            SPI_Receive_Data(SPI2, &dummy_read, 1);
 
             // insert some delay so that slave can ready with the data
             delay();
@@ -185,7 +185,7 @@ int main(void){
             SPI_Send_Data(SPI2, &dummy_write, 1);
 
             uint8_t led_status;
-            SPI_Received_Data(SPI2, &led_status, 1);
+            SPI_Receive_Data(SPI2, &led_status, 1);
         }
 
         // 4. CMD_PRINT     <len(2)> <message(len)>

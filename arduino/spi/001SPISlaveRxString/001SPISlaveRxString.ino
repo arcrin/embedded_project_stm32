@@ -71,6 +71,8 @@ void loop()
 
   i = 0;
   dataLen = SPI_SlaveReceive();
+  Serial.println("data length: ");
+  Serial.println(dataLen);
   for(i = 0 ; i < dataLen ; i++ )
   {
     dataBuff[i] =  SPI_SlaveReceive();

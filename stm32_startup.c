@@ -30,7 +30,7 @@ void UsageFault_Handler 			(void) __attribute__ ((weak, alias("Default_Handler")
 void SVC_Handler 					(void) __attribute__ ((weak, alias("Default_Handler")));
 void DebugMon_Handler 				(void) __attribute__ ((weak, alias("Default_Handler")));
 void PendSV_Handler   				(void) __attribute__ ((weak, alias("Default_Handler")));
-void SysTick_Handler                (void) __attribute__ ((weak, alias("Default_Handler")));
+void SysTick_Handler                (void);
 void WWDG_IRQHandler 				(void) __attribute__ ((weak, alias("Default_Handler")));
 void PVD_IRQHandler 				(void) __attribute__ ((weak, alias("Default_Handler")));
 void TAMP_STAMP_IRQHandler 			(void) __attribute__ ((weak, alias("Default_Handler")));

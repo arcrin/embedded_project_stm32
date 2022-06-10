@@ -284,7 +284,9 @@ uint8_t SPI_Receive_Data_IT(SPI_Handle_t *pSPIHandle, uint8_t *pRxBuffer, uint32
         // no other code can take over same SPI peripheral until reception is over
         pSPIHandle->RxState = SPI_BUSY_IN_RX;
         // 3. Enable the RXNEIE control bit to get interrupt whenever RXNEIE flag is set in SR
+        pSPIHandle->pSPIx->CR2 |= (1 << SPI_CR2_RXNEIE);
     }
+    return state;
 }
 
 // helper function implementations
@@ -325,7 +327,7 @@ static void spi_rxne_interrupt_handle(SPI_Handle_t *pSPIHandle){
         // 8 bit
         *(pSPIHandle->pRxBuffer) = (uint8_t) pSPIHandle->pSPIx->DR;
         pSPIHandle->RxLen--;
-        pSPIHandle->pRxBuffer;
+        pSPIHandle->pRxBuffer++;
     }
     if(!pSPIHandle->RxLen) {
         // reception is complete

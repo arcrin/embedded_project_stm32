@@ -14,7 +14,7 @@
  * Alternate function: AF5
  */
 
-void SPI2_GPIOInits(void){
+void SPI2_EPAPER_GPIOInits(void){
     GPIO_Handle_t SPIPins;
     SPIPins.pGPIOx = GPIOB;
     SPIPins.GPIO_PinConfig.GPIO_PinMode = GPIO_ALTFn_MODE;
@@ -40,7 +40,7 @@ void SPI2_GPIOInits(void){
     GPIO_Init(&SPIPins);
 }
 
-void SPI2_Inits(){
+void SPI2_EPAPER_Inits(){
     SPI_Handle_t spi2_handle;
     spi2_handle.pSPIx = SPI2;
     spi2_handle.SPIConfig.SPI_DeviceMode = SPI_DEVICE_MODE_MASTER;

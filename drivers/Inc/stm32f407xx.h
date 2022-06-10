@@ -468,5 +468,8 @@ void delay(uint32_t delay_in_ms);
 
 #include "stm32f407xx_gpio_driver.h"
 #include "stm32f407xx_spi_driver.h"
+#include "epaper.h"
+#include "GUI_Paint.h"
+#include <cstdlib>
 
 #endif //MCU1_STM32F407XX_H

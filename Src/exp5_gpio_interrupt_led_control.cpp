@@ -12,11 +12,14 @@
 #include <cstring>
 
 
-void delay(uint8_t scale){
+void manual_delay(uint8_t scale){
     for (int i = 0; i < 500000/scale; i++);
 }
 
 int main() {
+    disable_irq();
+    NVIC_SetPriority(-1, 0);
+
     GPIO_Handle_t ld4_gpio_handle, b1_gpio_handle;
     memset(&ld4_gpio_handle, 0, sizeof(ld4_gpio_handle));
     memset(&b1_gpio_handle, 0, sizeof(b1_gpio_handle));
@@ -39,6 +42,10 @@ int main() {
 
     GPIO_IRQPriorityConfig(IRQ_NO_EXTI0, 15);
     GPIO_IRQITConfig(IRQ_NO_EXTI0, ENABLE);
+
+    SysTick_Init(16000);
+    enable_irq();
+
     while(1){
 //        delay(5);
 //        GPIO_ToggleOutputPin(GPIOD, GPIO_PIN_NO_12);
@@ -47,9 +54,8 @@ int main() {
 
 extern "C"{ // use extern "C" to prevent C++ name mangling
     void EXTI0_IRQHandler() {
-        delay(10); //TODO: seems like there is debouncing problem
+//        delay(10); //TODO: seems like there is debouncing problem
         GPIO_IRQHandling(0);
         GPIO_ToggleOutputPin(GPIOD, GPIO_PIN_NO_12);
     }
-
 }

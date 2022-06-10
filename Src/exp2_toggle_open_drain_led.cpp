@@ -32,5 +32,4 @@ int main() {
         delay(1000);
         GPIO_ToggleOutputPin(led_gpio_handle.pGPIOx, GPIO_PIN_NO_12);
     }
-
 }

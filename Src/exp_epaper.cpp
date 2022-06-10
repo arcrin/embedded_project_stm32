@@ -20,10 +20,10 @@ void GPIO_Button_Init(){
     GPIO_Init(&b1_gpio_handle);
 }
 
-void SPI2_GPIOInits(){
+void SPI2_EPAPER_GPIOInits(){
     GPIO_Handle_t SPIPins;
     SPIPins.pGPIOx = GPIOB;
-    SPIPins.GPIO_PinConfig.GPIO_PinMode = GPIO_ALTFn_MODE;
+    SPIPins.GPIO_PinConfig.GPIO_PinMode = GPIO_ALTFN_MODE;
     SPIPins.GPIO_PinConfig.GPIO_PinAltFunMode = 5;
     SPIPins.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_PP; // TODO: why push pull
     SPIPins.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_PIN_PU;
@@ -46,7 +46,7 @@ void SPI2_GPIOInits(){
     GPIO_Init(&SPIPins);
 }
 
-void SPI2_Inits(){
+void SPI2_EPAPER_Inits(){
     SPI_Handle_t spi2_handle;
     spi2_handle.pSPIx = SPI2;
     spi2_handle.SPIConfig.SPI_DeviceMode = SPI_DEVICE_MODE_MASTER;
@@ -89,7 +89,7 @@ int main(){
 #if 0
         //show image for array
         Paint_SelectImage(BlackImage);
-        Paint_Clear(WHITE);
+        Paint_Clear(BLACK);
         Paint_DrawPoint(10, 80, BLACK, DOT_PIXEL_1X1, DOT_STYLE_DFT);
         Paint_DrawPoint(10, 90, BLACK, DOT_PIXEL_2X2, DOT_STYLE_DFT);
         Paint_DrawPoint(10, 100, BLACK, DOT_PIXEL_3X3, DOT_STYLE_DFT);
@@ -115,7 +115,7 @@ int main(){
         EPD_2IN66_Display(BlackImage);
 #endif
 
-# if 1
+# if 0
         Paint_SelectImage(BlackImage);
         Paint_Clear(WHITE);
         Paint_DrawBitMap(gImage_2in66);
@@ -123,6 +123,8 @@ int main(){
         EPD_2IN66_Display(BlackImage);
         delay(2000);
 #endif
+
+
 
 #if 0
         EPD_2IN66_Init_Partial();
@@ -162,13 +164,20 @@ int main(){
         EPD_2IN66_Clear();
 #endif
 
+#if 1
+        Paint_SelectImage(BlackImage);
+        Paint_Clear(WHITE);
+        Paint_DrawString_EN(10, 20, "hello world", &Font24, BLACK, WHITE);
+        delay(200);
+        EPD_2IN66_Display(BlackImage);
+#endif
 
 
         //*******************
-        EPD_2IN66_Init();
-        EPD_2IN66_Clear();
-        delay(5000);
-
+//        EPD_2IN66_Init();
+//        EPD_2IN66_Clear();
+//        delay(5000);
+        delay(3000);
         EPD_2IN66_Sleep();
         free(BlackImage);
         BlackImage = NULL;
