@@ -23,6 +23,8 @@ set(PROJECT_FILES
         modules/Fonts/font16.cpp
         modules/Fonts/font20.cpp
         modules/Fonts/font24.cpp
+        modules/ImageData.h
+        modules/ImageData.cpp
 #        modules/epaper/Inc/EPD_2in66.h
 #        modules/epaper/Src/EPD_2in66.cpp
 #        modules/epaper/Fonts/font8.cpp
@@ -33,7 +35,7 @@ set(PROJECT_FILES
 #        modules/epaper/Fonts/fonts.h
 #        modules/epaper/GUI/GUI_Paint.cpp
 #        modules/epaper/GUI/GUI_Paint.h
-        Src/exp9_spi_message_rcv_it.cpp
+        Src/exp_epaper.cpp
         stm32_startup.c
         )
 

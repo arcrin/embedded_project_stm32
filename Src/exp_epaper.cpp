@@ -115,7 +115,7 @@ int main(){
         EPD_2IN66_Display(BlackImage);
 #endif
 
-# if 0
+# if 1
         Paint_SelectImage(BlackImage);
         Paint_Clear(WHITE);
         Paint_DrawBitMap(gImage_2in66);
@@ -164,7 +164,7 @@ int main(){
         EPD_2IN66_Clear();
 #endif
 
-#if 1
+#if 0
         Paint_SelectImage(BlackImage);
         Paint_Clear(WHITE);
         Paint_DrawString_EN(10, 20, "hello world", &Font24, BLACK, WHITE);
