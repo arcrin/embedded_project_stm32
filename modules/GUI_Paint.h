@@ -48,8 +48,8 @@ typedef enum{
 /*
  * image color
  */
-#define WHITE       0xFF
-#define BLACK       0x00
+#define WHITE       0xFF // turn on pixel
+#define BLACK       0x00 // turn off pixel
 #define RED         BLACK
 
 #define IMAGE_BACKGROUND    WHITE

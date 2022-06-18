@@ -105,47 +105,7 @@ typedef struct {
 #define SPI_SSM_DI      0
 #define SPI_SSM_EN      1
 
-/*
- * SPI control register_1 bit definition macros
- */
-#define SPI_CR1_CPHA        0 // clock phase
-#define SPI_CR1_CPOL        1 // clock polarity
-#define SPI_CR1_MSTR        2 // master selection
-#define SPI_CR1_BR          3 // [2:0] baud rate
-#define SPI_CR1_SPE         6 // SPI enable
-#define SPI_CR1_LSBFIRST    7 // frame format MSB or LSB first
-#define SPI_CR1_SSI         8 // internall slave select, force its valie on NSS in software slave mode
-#define SPI_CR1_SSM         9 // software slabe managemet
-#define SPI_CR1_RXONLY      10 // receive only
-#define SPI_CR1_DFF         11 //data frame format (8-bit of 16-bit)
-#define SPI_CR1_CRCNEXT     12 // CRC transfer next
-#define SPI_CR1_CRCEN       13 // hardware CRC calculation enable
-#define SPI_CR1_BIDIOE      14 // output enable in bidirectional mode
-#define SPI_CR1_BIDI        15 // bidirectional data mode enable
 
-/*
- * SPI control register_2 bit definition macros
- */
-#define SPI_CR2_RXDMAEN     0 // rx buffer DMA(direct memory access) enable
-#define SPI_CR2_TXDMAEN     1 // tx buffer DMA enable
-#define SPI_CR2_SSOE        2 // SS ourput enable TODO: ?
-#define SPI_CR2_FRF         4 // frame format
-#define SPI_CR2_ERRIE       5 // error interrupt enable
-#define SPI_CR2_RXNEIE      6 // rx_buffer_not_empty_interrupt enable
-#define SPI_CR2_TXEIE       7 // tx_buffer_empty_interrupt enable
-
-/*
- * SPI status register bit definition macros
- */
-#define SPI_SR_RXNE         0 // rx buffer not empty
-#define SPI_SR_TXE          1 // tx buffer empty
-#define SPI_SR_CHSIDE       2 // channel side TODO: ?
-#define SPI_SR_UDR          3 // underrun flag TODO: ?
-#define SPI_SR_CRCEER       4 // CRC error flag
-#define SPI_SR_MODF         5 // mode fault TODO: ?
-#define SPI_SR_OVR          6 // overrun flag TODO: ?
-#define SPI_SR_BUSY          7 // busy flag
-#define SPI_SR_FRE          8 // frame format error
 
 /*
  * SPI flag definition macros
