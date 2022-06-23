@@ -277,7 +277,7 @@ void I2C_ManageAcking(I2C_RegDef_t *pI2Cx, uint8_t EnOrDi){
 
 
 void I2C_IRQInterruptConfig(uint8_t IRQNumber, uint8_t EnOrDi){
-    if(EnorDi == ENABLE)
+    if(EnOrDi == ENABLE)
     {
         if(IRQNumber <= 31)
         {
