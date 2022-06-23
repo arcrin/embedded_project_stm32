@@ -70,3 +70,9 @@ uint32_t RCC_GetPCLK2Value(){
 uint32_t RCC_GetPLLOutputClock(){
     return 0;
 }
+
+void RCC_SetClockSource(uint8_t clock_source){
+    if(clock_source == 0){
+        RCC->CFGR &= ~(0x3 << 1);
+    }
+}

@@ -13,10 +13,12 @@ set(PROJECT_FILES
         drivers/Inc/stm32f407xx_spi_driver.h
         drivers/Inc/stm32f407xx_usart_driver.h
         drivers/Inc/stm32f407xx_rcc_driver.h
+        drivers/Inc/stm32f407xx_i2c_driver.h
         drivers/Src/stm32f407xx_gpio_driver.cpp
         drivers/Src/stm32f407xx_spi_driver.cpp
         drivers/Src/stm32f407xx_usart_driver.cpp
         drivers/Src/stm32f407xx_rcc_driver.cpp
+        drivers/Src/stm32f407xx_i2c_driver.cpp
         modules/epaper.h
         modules/epaper.cpp
         modules/GUI_Paint.h
@@ -41,7 +43,7 @@ set(PROJECT_FILES
 #        modules/epaper/Fonts/fonts.h
 #        modules/epaper/GUI/GUI_Paint.cpp
 #        modules/epaper/GUI/GUI_Paint.h
-        Src/exp1_toggle_push_pull_led.cpp
+        Src/exp16_uart_case.cpp
         stm32_startup.c
         )
 

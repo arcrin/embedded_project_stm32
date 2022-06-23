@@ -486,6 +486,98 @@ typedef struct {
 #define UART5_PCLK_DI()         (RCC->APB1ENR &= ~(1 << 20))
 #define USART6_PCLK_DI()        (RCC->APB2ENR &= ~(1 << 5))
 
+
+/******************************************************************************
+ * I2C
+ * ****************************************************************************/
+#define I2C1_BASEADDR               (APB1PERIPH_BASE + 0X5400)
+#define I2C2_BASEADDR               (APB1PERIPH_BASE + 0x5800)
+#define I2C3_BASEADDR               (APB1PERIPH_BASE + 0x5c00)
+
+typedef struct {
+    _vo uint32_t CR1;
+    _vo uint32_t CR2;
+    _vo uint32_t OAR1;
+    _vo uint32_t OAR2;
+    _vo uint32_t DR;
+    _vo uint32_t SR1;
+    _vo uint32_t SR2;
+    _vo uint32_t CCR;
+    _vo uint32_t TRISE;
+    _vo uint32_t FLTR;
+} I2C_RegDef_t;
+
+#define I2C1        ((I2C_RegDef_t*) I2C1_BASEADDR)
+#define I2C2        ((I2C_RegDef_t*) I2C2_BASEADDR)
+#define I2C3        ((I2C_RegDef_t*) I2C3_BASEADDR)
+
+#define I2C1_PCLK_EN()  (RCC->APB1ENR |= (1 << 21))
+#define I2C2_PCLK_EN()  (RCC->APB1ENR |= (1 << 22))
+#define I2C3_PCLK_EN()  (RCC->APB1ENR |= (1 << 23))
+
+/*
+ * Bit position definitions I2C_CR1
+ */
+#define I2C_CR1_PE						0
+#define I2C_CR1_NOSTRETCH  				7
+#define I2C_CR1_START 					8
+#define I2C_CR1_STOP  				 	9
+#define I2C_CR1_ACK 				 	10
+#define I2C_CR1_SWRST  				 	15
+
+/*
+ * Bit position definitions I2C_CR2
+ */
+#define I2C_CR2_FREQ				 	0
+#define I2C_CR2_ITERREN				 	8
+#define I2C_CR2_ITEVTEN				 	9
+#define I2C_CR2_ITBUFEN 			    10
+
+/*
+ * Bit position definitions I2C_OAR1
+ */
+#define I2C_OAR1_ADD0    				 0
+#define I2C_OAR1_ADD71 				 	 1
+#define I2C_OAR1_ADD98  			 	 8
+#define I2C_OAR1_ADDMODE   			 	15
+
+/*
+ * Bit position definitions I2C_SR1
+ */
+
+#define I2C_SR1_SB 					 	0
+#define I2C_SR1_ADDR 				 	1
+#define I2C_SR1_BTF 					2
+#define I2C_SR1_ADD10 					3
+#define I2C_SR1_STOPF 					4
+#define I2C_SR1_RXNE 					6
+#define I2C_SR1_TXE 					7
+#define I2C_SR1_BERR 					8
+#define I2C_SR1_ARLO 					9
+#define I2C_SR1_AF 					 	10
+#define I2C_SR1_OVR 					11
+#define I2C_SR1_TIMEOUT 				14
+
+/*
+ * Bit position definitions I2C_SR2
+ */
+#define I2C_SR2_MSL						0
+#define I2C_SR2_BUSY 					1
+#define I2C_SR2_TRA 					2
+#define I2C_SR2_GENCALL 				4
+#define I2C_SR2_DUALF 					7
+
+/*
+ * Bit position definitions I2C_CCR
+ */
+#define I2C_CCR_CCR 					 0
+#define I2C_CCR_DUTY 					14
+#define I2C_CCR_FS
+
+
+/*****************************************************************
+ * TIMER
+ *****************************************************************/
 /*
  * Timer clock macros
  */
@@ -511,6 +603,15 @@ typedef struct {
 #define IRQ_NO_SPI1         35
 #define IRQ_NO_SPI2         36
 #define IRQ_NO_SPI3         51
+#define IRQ_NO_I2C1_EV     31
+#define IRQ_NO_I2C1_ER     32
+#define IRQ_NO_USART1	    37
+#define IRQ_NO_USART2	    38
+#define IRQ_NO_USART3	    39
+#define IRQ_NO_UART4	    52
+#define IRQ_NO_UART5	    53
+#define IRQ_NO_USART6	    71
+
 
 /*
  * macros for all the possible priority levels
@@ -620,6 +721,8 @@ void delay(uint32_t delay_in_ms);
 #include "stm32f407xx_gpio_driver.h"
 #include "stm32f407xx_spi_driver.h"
 #include "stm32f407xx_rcc_driver.h"
+#include "stm32f407xx_usart_driver.h"
+#include "stm32f407xx_i2c_driver.h"
 #include "epaper.h"
 #include "GUI_Paint.h"
 #include <cstdlib>
