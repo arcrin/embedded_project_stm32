@@ -171,7 +171,7 @@ void I2C_Init(I2C_Handle_t *pI2CHandle){
 void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t Len, uint8_t SlaveAddr, uint8_t Sr){
     // 1. Generate the START condition
     I2C_GenerateStartCondition(pI2CHandle->pI2Cx);
-
+ 
     // 2. Confirm that start generation is completed by checking the SB flag in the SR1
     // NOTE: until SB is cleared SCL will be stretched (pulled to LOW)
     while(!I2C_GetFlagStatus(pI2CHandle->pI2Cx, I2C_FLAG_SB));
