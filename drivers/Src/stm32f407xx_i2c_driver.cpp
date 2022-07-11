@@ -174,7 +174,7 @@ void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t L
  
     // 2. Confirm that start generation is completed by checking the SB flag in the SR1
     // NOTE: until SB is cleared SCL will be stretched (pulled to LOW)
-    while(!I2C_GetFlagStatus(pI2CHandle->pI2Cx, I2C_FLAG_SB));
+    while(!I2C_GetFlagStatus(pI2CHandle->pI2Cx, I2C_FLAG_SB)); // waiting for this flag to be set
 
     // 3. Send the address of the slave with R/nW bit set to W(0) (total 8 bits)
     I2C_ExecuteAddressPhaseWrite(pI2CHandle->pI2Cx, SlaveAddr);
@@ -188,7 +188,7 @@ void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t L
 
     // 6. Send the data until len becomes 0
     while (Len > 0) {
-        while(!I2C_GetFlagStatus(pI2CHandle->pI2Cx, I2C_FLAG_TXE));
+        while(!I2C_GetFlagStatus(pI2CHandle->pI2Cx, I2C_FLAG_TXE)); // wait until data register is empty
         pI2CHandle->pI2Cx->DR = *pTxBuffer;
         pTxBuffer++;
         Len--;
@@ -198,7 +198,7 @@ void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t L
     // NOTE: TXE=1, BTF=1, means that both SR and DR are emtpy and next transmission should begin
     // when BTF=1 SCL will be stretched
     while(!I2C_GetFlagStatus(pI2CHandle->pI2Cx, I2C_FLAG_TXE));
-    while(!I2C_GetFlagStatus(pI2CHandle->pI2Cx, I2C_FLAG_BTF));
+    while(!I2C_GetFlagStatus(pI2CHandle->pI2Cx, I2C_FLAG_BTF)); // wait for byte transfer is finished
 
     // 8. Generate STOP condition and master need not wait for the completion of stop condition
     if (Sr == I2C_DISABLE_SR) {
@@ -242,9 +242,31 @@ void I2C_Master_ReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer, uint8_
     // procedure to read data from slave when Len > 1
     if (Len > 1) {
         // clear the ADDR flag
-        I2C_ClearADDRFlag(pI2CHandle);
+        I2C_ClearADDRFlag(pI2CHandle); // data reception will only begin after ADDR flag is cleared
 
         // read the data until Len becomes zero
+        for (uint32_t i = Len; i > 0; i--) {
+            // wait until RXNE becomes 1
+            while(!I2C_GetFlagStatus(pI2CHandle->pI2Cx, I2C_FLAG_RXNE));
+            if (i == 2) { // if last 2 bytes are remaining
+                // Disable Acking
+                I2C_ManageAcking(pI2CHandle->pI2Cx, I2C_ACK_DISABLE);
 
+                // Generate STOP condition
+                if (Sr == I2C_DISABLE_SR) {
+                    I2C_GenerateStopCondition(pI2CHandle->pI2Cx);
+                }
+            }
+
+            // read the data from data register in to buffer
+            *pRxBuffer = pI2CHandle->pI2Cx->DR;
+
+            // increment the buffer address
+            pRxBuffer++;
+        }
+    }
+    // re-enable ACKing
+    if (pI2CHandle->I2C_Config.I2C_AckControl == I2C_ACK_ENABLE) {
+        I2C_ManageAcking(pI2CHandle->pI2Cx, I2C_ACK_ENABLE);
     }
 }
