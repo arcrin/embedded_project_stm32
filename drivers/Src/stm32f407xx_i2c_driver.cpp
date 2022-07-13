@@ -120,7 +120,7 @@ void I2C_Init(I2C_Handle_t *pI2CHandle){
     uint32_t tempreg = 0;
 
     // enable the clock for the i2cx peripheral
-    I2C_PeriClockControl(pI2CHandle->pI2Cx, ENABLE);
+    I2C_PeripheralClockControl(pI2CHandle->pI2Cx, ENABLE);
 
     // ack control bit
     tempreg |= pI2CHandle->I2C_Config.I2C_AckControl << 10;
@@ -206,7 +206,7 @@ void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t L
     }
 }
 
-void I2C_Master_ReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer, uint8_t Len, uint8_t SlaveAddr, uint8_t Sr){
+void I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer, uint8_t Len, uint8_t SlaveAddr, uint8_t Sr){
     // 1. Generate the START condition
     I2C_GenerateStartCondition(pI2CHandle->pI2Cx);
 
@@ -268,5 +268,64 @@ void I2C_Master_ReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer, uint8_
     // re-enable ACKing
     if (pI2CHandle->I2C_Config.I2C_AckControl == I2C_ACK_ENABLE) {
         I2C_ManageAcking(pI2CHandle->pI2Cx, I2C_ACK_ENABLE);
+    }
+}
+
+void I2C_IRQInterruptConfig(uint8_t IRQNumber, uint8_t EnOrDi){
+    if(EnOrDi == ENABLE)
+    {
+        if(IRQNumber <= 31)
+        {
+            *NVIC_ISER0 |= ( 1 << IRQNumber );
+
+        }else if(IRQNumber > 31 && IRQNumber < 64 )
+        {
+            *NVIC_ISER1 |= ( 1 << (IRQNumber % 32) );
+        }
+        else if(IRQNumber >= 64 && IRQNumber < 96 )
+        {
+            *NVIC_ISER3 |= ( 1 << (IRQNumber % 64) );
+        }
+    }else
+    {
+        if(IRQNumber <= 31)
+        {
+            *NVIC_ICER0 |= ( 1 << IRQNumber );
+        }else if(IRQNumber > 31 && IRQNumber < 64 )
+        {
+            *NVIC_ICER1 |= ( 1 << (IRQNumber % 32) );
+        }
+        else if(IRQNumber >= 6 && IRQNumber < 96 )
+        {
+            *NVIC_ICER3 |= ( 1 << (IRQNumber % 64) );
+        }
+    }
+}
+
+void I2C_IRQPriorityConfig(uint8_t IRQNumber, uint32_t IRQPriority){
+    uint8_t iprx = IRQNumber / 4;
+    uint8_t iprx_section  = IRQNumber %4 ;
+
+    uint8_t shift_amount = (8 * iprx_section) + (8 - NVIC_PRIORITY_BITS) ;
+
+    *(NVIC_IPR_BASEADDR + iprx) |=  (IRQPriority << shift_amount);
+}
+
+uint8_t I2C_MasterSendDataIT(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t Len, uint8_t SlaveAddr, uint8_t Sr){
+    uint8_t busystate = pI2CHandle->TxRxState; // take a note of the current state
+    if((busystate != I2C_BUSY_IN_TX) && (busystate != I2C_BUSY_IN_RX)){ // if the buss is neither transmitting nor receiving
+        pI2CHandle->pTxBuffer = pTxBuffer;
+        pI2CHandle->TxLen = Len;
+        pI2CHandle->TxRxState = I2C_BUSY_IN_TX;
+        pI2CHandle->DevAddr = SlaveAddr;
+        pI2CHandle->Sr = Sr;
+
+        // generate start condition
+        I2C_GenerateStartCondition(pI2CHandle->pI2Cx);
+
+        // set ITBUFEN bit (buffer interrupt enable)
+        pI2CHandle->pI2Cx->CR2 |= (1 << I2C_CR2_ITBUFEN);
+
+
     }
 }
