@@ -22,7 +22,7 @@ typedef struct {
     uint32_t        TxLen;
     uint32_t        RxLen;
     uint8_t         TxRxState;
-    uint8_t         DevAddr;
+    uint8_t         DevAddr; // device address
     uint32_t        RxSize;
     uint8_t         Sr;
 } I2C_Handle_t;
