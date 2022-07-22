@@ -84,3 +84,8 @@ int main(){
         I2C_MasterSendData(&I2C1Handle, sample_data, strlen((char *) sample_data), SLAVE_ADDR, 0);
     }
 }
+
+void I2C_ApplicationEventCallback(I2C_Handle_t *pI2CHandle, uint8_t AppEv){
+
+
+}

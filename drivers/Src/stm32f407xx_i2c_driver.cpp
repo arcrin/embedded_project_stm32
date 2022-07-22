@@ -12,7 +12,7 @@ static void I2C_MasterHandleRXNEInterrupt(I2C_Handle_t *pI2CHandle);
 
 static void I2C_MasterHandleTXEInterrupt(I2C_Handle_t *pI2CHandle);
 
-static void I2C_GenerateStartCondition(I2C_RegDef_t *pI2Cx);
+static void I2C_GenerateStopCondition(I2C_RegDef_t *pI2Cx);
 
 void I2C_PeripheralControl(I2C_RegDef_t *pI2Cx, uint8_t EnOrDi){
     if (EnOrDi == ENABLE) {
@@ -40,7 +40,7 @@ static void I2C_GenerateStartCondition(I2C_RegDef_t *pI2Cx){
     pI2Cx->CR1 |= (1 << I2C_CR1_START);
 }
 
-void I2C_GenerateStopCondition(I2C_RegDef_t *pI2Cx){
+static void I2C_GenerateStopCondition(I2C_RegDef_t *pI2Cx){
     pI2Cx->CR1 |= (1 << I2C_CR1_STOP);
 }
 
@@ -335,8 +335,7 @@ uint8_t I2C_MasterSendDataIT(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer, uint3
     return busystate;
 }
 
-uint8_t I2C_MasterReceiveDataIT(I2C_Handle_t *pI2CHandle,
-                                uint8_t *pRxBuffer, uint8_t Len, uint8_t SlaveAddr, uint8_t Sr){
+uint8_t I2C_MasterReceiveDataIT(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer, uint8_t Len, uint8_t SlaveAddr, uint8_t Sr){
     uint8_t busystate = pI2CHandle->TxRxState;
     if ((busystate != I2C_BUSY_IN_TX) && (busystate != I2C_BUSY_IN_RX)) { // if the bus is not busy in transmitting or receiving
         pI2CHandle->pRxBuffer = pRxBuffer;
@@ -441,7 +440,7 @@ void I2C_EV_IRQHandling(I2C_Handle_t *pI2CHandle){
 
     temp1 = pI2CHandle->pI2Cx->CR2 & (1 << I2C_CR2_ITEVTEN); // read if event interrupt bit-status
     temp2 = pI2CHandle->pI2Cx->CR2 & (1 << I2C_CR2_ITBUFEN); // read if buffer interrupt bit-status
-    temp3 = pI2CHandle->pI2Cx->CR2 & (1 << I2C_SR1_SB); // read SB status flag
+    temp3 = pI2CHandle->pI2Cx->SR1 & (1 << I2C_SR1_SB); // read SB status flag
 
     // 1. SB (start bit generated) event handle
     // Note: SB flag is only applicable in master mode
@@ -456,7 +455,8 @@ void I2C_EV_IRQHandling(I2C_Handle_t *pI2CHandle){
         }
     }
 
-    temp3 = pI2CHandle->pI2Cx->SR1 & (1 << I2C_SR1_ADDR); // read ADDR status flag
+    temp3 = pI2CHandle->pI2Cx->SR1; // read ADDR status flag
+    temp3 = temp3 & (1 << I2C_SR1_ADDR); // read ADDR status flag
 
     // 2. ADDR event handle
     // Note: In master mode: Address is sent
@@ -533,5 +533,65 @@ void I2C_EV_IRQHandling(I2C_Handle_t *pI2CHandle){
                 I2C_ApplicationEventCallback(pI2CHandle, I2C_EV_DATA_RCV);
             }
         }
+    }
+}
+
+void I2C_ER_IRQHandling(I2C_Handle_t *pI2CHandle){
+    uint32_t temp1, temp2;
+
+    // read the status of ITERREN control bit in the CR2
+    temp2 = (pI2CHandle->pI2Cx->CR2) & (1 << I2C_CR2_ITERREN);
+    /***************Check for Bus Error*******************/
+    temp1 = (pI2CHandle->pI2Cx->SR1) & (1 << I2C_SR1_BERR);
+    if (temp1 & temp2) {
+        // This is Bus error
+        // clear the bus error flag
+        pI2CHandle->pI2Cx->SR1 &= ~(1 << I2C_SR1_BERR);
+
+        // notify the application about the error
+        I2C_ApplicationEventCallback(pI2CHandle, I2C_ERROR_BERR);
+    }
+    /************Check for arbitration lost error*************/
+    temp1 = (pI2CHandle->pI2Cx->SR1) & (1 << I2C_SR1_ARLO);
+    if (temp1 && temp2) {
+        // This is arbitration lost error
+        // clear the arbitration lost error flag
+        pI2CHandle->pI2Cx->SR1 &= ~(1 << I2C_SR1_ARLO);
+
+        // notify the application about the error
+        I2C_ApplicationEventCallback(pI2CHandle, I2C_ERROR_ARLO);
+    }
+
+    /*************Check for ACK failure error******************/
+    temp1 = (pI2CHandle->pI2Cx->SR1) & (1 << I2C_SR1_AF);
+    if (temp1 & temp2) {
+        // This is ACK failure error
+        // clear the ACK failure error flag
+        pI2CHandle->pI2Cx->SR1 &= ~(1 << I2C_SR1_AF);
+
+        // notify the application about error
+        I2C_ApplicationEventCallback(pI2CHandle, I2C_ERROR_AF);
+    }
+
+    /*************Check for Overrun/underrun error*************/
+    temp1 = (pI2CHandle->pI2Cx->SR1) & (1 << I2C_SR1_OVR);
+    if (temp1 & temp2) {
+        // This is overrun/underrun error
+        // clear overrun/underrun flag
+        pI2CHandle->pI2Cx->SR1 &= ~(1 << I2C_SR1_OVR);
+
+        // notify application about the error
+        I2C_ApplicationEventCallback(pI2CHandle, I2C_ERROR_OVR);
+    }
+
+    /**************Check for Time out error*********************/
+    temp1 = (pI2CHandle->pI2Cx->SR1) & (1 << I2C_SR1_TIMEOUT);
+    if (temp1 && temp2) {
+        // This is Time out error
+        // clear the Time out error flag
+        pI2CHandle->pI2Cx->SR1 &= ~(1 << I2C_SR1_TIMEOUT);
+
+        // notify application about this error
+        I2C_ApplicationEventCallback(pI2CHandle, I2C_ERROR_TIMEOUT);
     }
 }
