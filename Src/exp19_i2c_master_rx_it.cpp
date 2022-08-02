@@ -18,7 +18,7 @@ uint8_t rcv_buf[32];
 
 /*
  * PB6-> SCL
- * PB7-> SDA
+ * PB9-> SDA
  */
 
 void I2C1_GPIOInits()

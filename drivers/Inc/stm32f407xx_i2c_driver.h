@@ -134,4 +134,6 @@ void I2C_SlaveEnableDisableCallbackEvents(I2C_RegDef_t *pI2CHandle, uint8_t app_
 
 void I2C_ApplicationEventCallback(I2C_Handle_t *pI2CHandle, uint8_t app_event);
 
+void I2C_GenerateStopCondition(I2C_RegDef_t *pI2Cx);
+
 #endif //MCU1_STM32F407XX_I2C_DRIVER_H
