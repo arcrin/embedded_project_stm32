@@ -540,13 +540,14 @@ void I2C_EV_IRQHandling(I2C_Handle_t *pI2CHandle){
 }
 
 void I2C_ER_IRQHandling(I2C_Handle_t *pI2CHandle){
-    uint32_t temp1, temp2;
+    uint32_t ITERREN_BIT;
 
     // read the status of ITERREN control bit in the CR2
-    temp2 = (pI2CHandle->pI2Cx->CR2) & (1 << I2C_CR2_ITERREN);
+    ITERREN_BIT = ((pI2CHandle->pI2Cx->CR2) & (1 << I2C_CR2_ITERREN)) >> I2C_CR2_ITERREN;
     /***************Check for Bus Error*******************/
-    temp1 = (pI2CHandle->pI2Cx->SR1) & (1 << I2C_SR1_BERR);
-    if (temp1 & temp2) {
+    uint32_t BERR_FLAG;
+    BERR_FLAG = ((pI2CHandle->pI2Cx->SR1) & (1 << I2C_SR1_BERR)) >> I2C_SR1_BERR;
+    if (BERR_FLAG & ITERREN_BIT) {
         // This is Bus error
         // clear the bus error flag
         pI2CHandle->pI2Cx->SR1 &= ~(1 << I2C_SR1_BERR);
@@ -555,8 +556,9 @@ void I2C_ER_IRQHandling(I2C_Handle_t *pI2CHandle){
         I2C_ApplicationEventCallback(pI2CHandle, I2C_ERROR_BERR);
     }
     /************Check for arbitration lost error*************/
-    temp1 = (pI2CHandle->pI2Cx->SR1) & (1 << I2C_SR1_ARLO);
-    if (temp1 && temp2) {
+    uint32_t ARLO_FLAG;
+    ARLO_FLAG = ((pI2CHandle->pI2Cx->SR1) & (1 << I2C_SR1_ARLO)) >> I2C_SR1_ARLO;
+    if (ARLO_FLAG && ITERREN_BIT) {
         // This is arbitration lost error
         // clear the arbitration lost error flag
         pI2CHandle->pI2Cx->SR1 &= ~(1 << I2C_SR1_ARLO);
@@ -566,8 +568,9 @@ void I2C_ER_IRQHandling(I2C_Handle_t *pI2CHandle){
     }
 
     /*************Check for ACK failure error******************/
-    temp1 = (pI2CHandle->pI2Cx->SR1) & (1 << I2C_SR1_AF);
-    if (temp1 & temp2) {
+    uint32_t AF_FLAG;
+    AF_FLAG = ((pI2CHandle->pI2Cx->SR1) & (1 << I2C_SR1_AF)) >> I2C_SR1_AF;
+    if (AF_FLAG & ITERREN_BIT) {
         // This is ACK failure error
         // clear the ACK failure error flag
         pI2CHandle->pI2Cx->SR1 &= ~(1 << I2C_SR1_AF);
@@ -577,8 +580,9 @@ void I2C_ER_IRQHandling(I2C_Handle_t *pI2CHandle){
     }
 
     /*************Check for Overrun/underrun error*************/
-    temp1 = (pI2CHandle->pI2Cx->SR1) & (1 << I2C_SR1_OVR);
-    if (temp1 & temp2) {
+    uint32_t OVR_FLAG;
+    OVR_FLAG = ((pI2CHandle->pI2Cx->SR1) & (1 << I2C_SR1_OVR)) >> I2C_SR1_OVR;
+    if (OVR_FLAG & ITERREN_BIT) {
         // This is overrun/underrun error
         // clear overrun/underrun flag
         pI2CHandle->pI2Cx->SR1 &= ~(1 << I2C_SR1_OVR);
@@ -588,8 +592,9 @@ void I2C_ER_IRQHandling(I2C_Handle_t *pI2CHandle){
     }
 
     /**************Check for Time out error*********************/
-    temp1 = (pI2CHandle->pI2Cx->SR1) & (1 << I2C_SR1_TIMEOUT);
-    if (temp1 && temp2) {
+    uint32_t TIMEOUT_FLAG;
+    TIMEOUT_FLAG = ((pI2CHandle->pI2Cx->SR1) & (1 << I2C_SR1_TIMEOUT))>> I2C_SR1_TIMEOUT;
+    if (TIMEOUT_FLAG && ITERREN_BIT) {
         // This is Time out error
         // clear the Time out error flag
         pI2CHandle->pI2Cx->SR1 &= ~(1 << I2C_SR1_TIMEOUT);

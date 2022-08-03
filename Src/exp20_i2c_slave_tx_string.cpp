@@ -12,7 +12,7 @@
 I2C_Handle_t I2C1Handle;
 
 //rcv buffer
-uint8_t Tx_buffer[32] = "STM32 Slave mode testing";
+uint8_t tx_buffer[32] = "STM32 Slave mode testing\n";
 
 /*
  * PB6 -> SCL
@@ -32,7 +32,7 @@ void I2C1_GPIOInits(){
     GPIO_Init(&I2CPins);
 
     //sda
-    I2CPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_7;
+    I2CPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_9;
     GPIO_Init(&I2CPins);
 }
 
@@ -64,6 +64,47 @@ int main(){
 
     I2C1_Inits();
 
+    I2C_IRQInterruptConfig(IRQ_NO_I2C1_EV, ENABLE);
+    I2C_IRQInterruptConfig(IRQ_NO_I2C1_ER, ENABLE);
 
+    I2C_SlaveEnableDisableCallbackEvents(I2C1, ENABLE);
 
+    I2C_PeripheralControl(I2C1, ENABLE);
+
+    I2C_ManageAcking(I2C1, I2C_ACK_ENABLE);
+
+    while(1);
+}
+
+extern "C"{
+    void I2C1_EV_IRQHandler(){
+        I2C_EV_IRQHandling(&I2C1Handle);
+    }
+}
+
+extern "C"{
+    void I2C1_ER_IRQHandler(){
+        I2C_ER_IRQHandling(&I2C1Handle);
+    }
+}
+
+void I2C_ApplicationEventCallback(I2C_Handle_t *pI2CHandle, uint8_t AppEv){
+    static uint8_t commandCode = 0;
+    static uint8_t count = 0;
+
+    if (AppEv == I2C_EV_DATA_REQ) {
+        if (commandCode == 0x51) {
+            I2C_SlaveSendData(pI2CHandle->pI2Cx, strlen((char *) tx_buffer));
+        } else if(commandCode == 0x52) {
+            I2C_SlaveSendData(pI2CHandle->pI2Cx, tx_buffer[count++]);
+        }
+    } else if (AppEv == I2C_EV_DATA_RCV) {
+        commandCode = I2C_SlaveReceiveData(pI2CHandle->pI2Cx);
+    } else if (AppEv == I2C_ERROR_AF) {
+        commandCode == 0xff;
+        count = 0;
+    } else if (AppEv == I2C_EV_STOP) {
+        //This only happens during slave reception.
+        //Master has ended the I2C communication with the slave.
+    }
 }

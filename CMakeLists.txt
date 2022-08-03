@@ -43,7 +43,7 @@ set(PROJECT_FILES
 #        modules/epaper/Fonts/fonts.h
 #        modules/epaper/GUI/GUI_Paint.cpp
 #        modules/epaper/GUI/GUI_Paint.h
-        Src/exp19_i2c_master_rx_it.cpp
+        Src/exp20_i2c_slave_tx_string.cpp
         stm32_startup.c
         )
 
