@@ -42,6 +42,9 @@ static void I2C_GenerateStartCondition(I2C_RegDef_t *pI2Cx){
 
 void I2C_GenerateStopCondition(I2C_RegDef_t *pI2Cx){
     pI2Cx->CR1 |= (1 << I2C_CR1_STOP);
+    //note: somehow I need to manually clear the stop bit in CR1?!
+    while(!(pI2Cx->CR1 & (1 << I2C_CR1_STOP)));
+    pI2Cx->CR1 &= ~(1 << I2C_CR1_STOP);
 }
 
 static void I2C_ExecuteAddressPhaseWrite(I2C_RegDef_t *pI2Cx, uint8_t SlaveAddr){
@@ -465,7 +468,7 @@ void I2C_EV_IRQHandling(I2C_Handle_t *pI2CHandle){
         I2C_ClearADDRFlag(pI2CHandle);
     }
 
-    temp3 = pI2CHandle->pI2Cx->SR1 * (1 << I2C_SR1_BTF);
+    temp3 = pI2CHandle->pI2Cx->SR1 & (1 << I2C_SR1_BTF);
     // 3. Handle byte transfer finished event (BTF)
     if (temp1 && temp3) {
         if (pI2CHandle->TxRxState == I2C_BUSY_IN_TX) { // if TxE is also set
