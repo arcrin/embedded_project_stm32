@@ -187,9 +187,56 @@ typedef struct{
 #define GPIOJ_REG_RESET()        do{RCC->AHB1RSTR |= (1<<9); RCC->AHB1RSTR &= ~(1<<9);} while(0)
 #define GPIOK_REG_RESET()        do{RCC->AHB1RSTR |= (1<<10); RCC->AHB1RSTR &= ~(1<<10);} while(0)
 
-/*
+/************************************************
+ * ADC
+ ************************************************/
+ typedef struct {
+     _vo uint32_t SR;
+     _vo uint32_t CR1;
+     _vo uint32_t CR2;
+     _vo uint32_t SMPR1;
+     _vo uint32_t SMPR2;
+     _vo uint32_t JOFR1;
+     _vo uint32_t JOFR2;
+     _vo uint32_t JOFR3;
+     _vo uint32_t JOFR4;
+     _vo uint32_t HTR;
+     _vo uint32_t LTR;
+     _vo uint32_t SQR1;
+     _vo uint32_t SQR2;
+     _vo uint32_t SQR3;
+     _vo uint32_t JSQR;
+     _vo uint32_t JDR1;
+     _vo uint32_t JDR2;
+     _vo uint32_t JDR3;
+     _vo uint32_t JDR4;
+     _vo uint32_t DR;
+ } ADC_RegDef_t, *pADC_RegDef_t;
+
+ typedef struct{
+     _vo uint32_t CSR;
+     _vo uint32_t CCR;
+     _vo uint32_t CDR;
+ } ADC_Common_RegDef_t, *pADC_Common_RegDef_t;
+
+#define ADC1_BASEADDR       (APB2PERIPH_BASE + 0x2000U)
+#define ADC2_BASEADDR       (APB2PERIPH_BASE + 0x2100U)
+#define ADC3_BASEADDR       (APB2PERIPH_BASE + 0x2200U)
+#define ADC_COMMON_BASEADDR (APB2PERIPH_BASE + 0x2300U)
+
+#define ADC1        ((pADC_RegDef_t)ADC1_BASEADDR)
+#define ADC2        ((pADC_RegDef_t)ADC2_BASEADDR)
+#define ADC3        ((pADC_RegDef_t)ADC3_BASEADDR)
+#define ADC_COMMON  ((pADC_Common_RegDef_t)ADC_COMMON_BASEADDR)
+
+#define ADC1_PCLK_EN()      RCC->APB2ENR |= (1 << 8)
+#define ADC2_PCLK_EN()      RCC->APB2ENR |= (1 << 9)
+#define ADC3_PCLK_EN()      RCC->APB2ENR |= (1 << 10)
+
+
+/**********************************
  * RCC register structure
- */
+ **********************************/
 typedef struct {
     _vo int32_t CR;
     _vo int32_t PLLCFGR;
@@ -488,7 +535,7 @@ typedef struct {
 
 
 /******************************************************************************
- * I2Co
+ * I2C
  * ****************************************************************************/
 #define I2C1_BASEADDR               (APB1PERIPH_BASE + 0X5400)
 #define I2C2_BASEADDR               (APB1PERIPH_BASE + 0x5800)
@@ -723,6 +770,7 @@ void delay(uint32_t delay_in_ms);
 #include "stm32f407xx_rcc_driver.h"
 #include "stm32f407xx_usart_driver.h"
 #include "stm32f407xx_i2c_driver.h"
+#include "stm32f407xx_adc_driver.h"
 #include "epaper.h"
 #include "GUI_Paint.h"
 #include <cstdlib>

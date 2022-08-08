@@ -603,3 +603,6 @@ void I2C_ER_IRQHandling(I2C_Handle_t *pI2CHandle){
         I2C_ApplicationEventCallback(pI2CHandle, I2C_ERROR_TIMEOUT);
     }
 }
+
+
+void I2C_ApplicationEventCallback(I2C_Handle_t *pI2CHandle, uint8_t app_event) __attribute__((weak));

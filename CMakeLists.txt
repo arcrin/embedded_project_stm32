@@ -9,11 +9,13 @@ set(CMAKE_C_STANDARD 11)
 set(PROJECT_FILES
         drivers/Inc/stm32f407xx.h
         drivers/Src/stm32f407xx.cpp
+        drivers/Inc/stm32f407xx_adc_driver.h
         drivers/Inc/stm32f407xx_gpio_driver.h
         drivers/Inc/stm32f407xx_spi_driver.h
         drivers/Inc/stm32f407xx_usart_driver.h
         drivers/Inc/stm32f407xx_rcc_driver.h
         drivers/Inc/stm32f407xx_i2c_driver.h
+        drivers/Src/stm32407xx_adc_driver.cpp
         drivers/Src/stm32f407xx_gpio_driver.cpp
         drivers/Src/stm32f407xx_spi_driver.cpp
         drivers/Src/stm32f407xx_usart_driver.cpp
@@ -43,7 +45,7 @@ set(PROJECT_FILES
 #        modules/epaper/Fonts/fonts.h
 #        modules/epaper/GUI/GUI_Paint.cpp
 #        modules/epaper/GUI/GUI_Paint.h
-        Src/exp21_i2c_slave_tx_string2.cpp
+        Src/exp22_adc_test.cpp
         stm32_startup.c
         )
 
