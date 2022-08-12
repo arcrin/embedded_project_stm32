@@ -9,5 +9,6 @@ extern const unsigned char gImage_100X50[];
 extern const unsigned char gImage_2in66[];
 extern const unsigned char tag_logo_24x24[];
 extern const unsigned char tag_logo_100x100[];
+extern const unsigned char label_image[];
 
 #endif //MCU1_IMAGEDATA_H

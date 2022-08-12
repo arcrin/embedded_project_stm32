@@ -12,6 +12,7 @@ extern const unsigned char gImage_100X50[];
 extern const unsigned char gImage_2in66[];
 extern const unsigned char tag_logo_24x24[];
 extern const unsigned char tag_logo_100x100[];
+extern const unsigned char label_image[];
 
 enum code128b{
 };
@@ -187,7 +188,7 @@ int main(){
         EPD_2IN66_Display(BlackImage);
 #endif
 
-#if 1
+#if 0
         char product_firmware_label[] = "Firmware: 4.11.293";
         char jig_revision_label[] = "Jig Rev: 0.0";
         char product_name_label[] = "Product: O3-DIN-Modules";
@@ -226,6 +227,9 @@ int main(){
 
         delay(200);
         EPD_2IN66_Display(BlankImage);
+#endif
+#if 1
+        EPD_2IN66_Display((uint8_t*)&label_image);
 #endif
 
 
