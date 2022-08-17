@@ -9,7 +9,7 @@ USART_Handle_t usart2_handle;
 
 void USART2_Init(){
     usart2_handle.pUSARTx = USART2;
-    usart2_handle.USART_Config.USART_Baud = USART_STD_BAUD_115200;
+    usart2_handle.USART_Config.USART_Baud = USART_STD_BAUD_9600;
     usart2_handle.USART_Config.USART_HWFlowControl = USART_HW_FLOW_CTRL_NONE;
     usart2_handle.USART_Config.USART_Mode = USART_TX_ONLY_MODE;
     usart2_handle.USART_Config.USART_NumOfStopBits = USART_STOPBITS_1;
