@@ -45,7 +45,7 @@ set(PROJECT_FILES
 #        modules/epaper/Fonts/fonts.h
 #        modules/epaper/GUI/GUI_Paint.cpp
 #        modules/epaper/GUI/GUI_Paint.h
-        Src/exp16_uart_case.cpp
+        Src/exp_epaper.cpp
         stm32_startup.c
         )
 
