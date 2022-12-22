@@ -38,16 +38,16 @@ void EPD_GPIO_Init(){
     epd_gpio_handle.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_PP;
     epd_gpio_handle.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD;
 
+    // BUSY pin
+    epd_gpio_handle.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_10;
+    GPIO_Init(&epd_gpio_handle);
+
     // RST pin
     epd_gpio_handle.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_8;
     GPIO_Init(&epd_gpio_handle);
 
     // DC pin
     epd_gpio_handle.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_9;
-    GPIO_Init(&epd_gpio_handle);
-
-    // BUSY pin
-    epd_gpio_handle.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_10;
     GPIO_Init(&epd_gpio_handle);
 
     // CS pin
@@ -60,7 +60,6 @@ void EPD_GPIO_Init(){
  */
 void EPD_SPI2_Init(){
     GPIO_Handle_t SPIPins;
-    SPIPins.pGPIOx = GPIOB;
     SPIPins.GPIO_PinConfig.GPIO_PinMode = GPIO_ALTFN_MODE;
     SPIPins.GPIO_PinConfig.GPIO_PinAltFunMode = 5;
     SPIPins.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_PP;
@@ -72,10 +71,12 @@ void EPD_SPI2_Init(){
 //    GPIO_Init(&SPIPins);
 
     // SCK
+    SPIPins.pGPIOx = GPIOB;
     SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_13;
     GPIO_Init(&SPIPins);
 
     // MOSI
+    SPIPins.pGPIOx = GPIOB;
     SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_15;
     GPIO_Init(&SPIPins);
 

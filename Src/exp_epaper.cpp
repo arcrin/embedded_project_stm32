@@ -85,32 +85,32 @@ int main(){
         delay(5000);
 
         //Create a new image cache
-        uint8_t *BlankImage;
-        uint16_t Imagesize =
+        uint8_t *bw_image;
+        uint16_t image_size =
                 ((EPD_2IN66_WIDTH % 8 == 0) ? (EPD_2IN66_WIDTH / 8) : (EPD_2IN66_WIDTH / 8 + 1)) * EPD_2IN66_HEIGHT;
-        if ((BlankImage = (uint8_t *) malloc(Imagesize)) == NULL) {
+        if ((bw_image = (uint8_t *) malloc(image_size)) == NULL) {
             return -1;
         }
-        Paint_NewImage(BlankImage, EPD_2IN66_WIDTH, EPD_2IN66_HEIGHT, ROTATE_270, WHITE);
+        Paint_NewImage(bw_image, EPD_2IN66_WIDTH, EPD_2IN66_HEIGHT, ROTATE_270, WHITE);
 
 #if 0
         //show image for array
-        Paint_SelectImage(BlankImage);
+        Paint_SelectImage(bw_image);
         Paint_Clear(WHITE);
-//        BlankImage[0] = 0x3f;
-//        BlankImage[19] = 0x3f;
-//        BlankImage[37] = 0x0;
-//        BlankImage[74] = 0x0;
-//        BlankImage[111] = 0x0;
-        Paint_DrawPoint(20, 65, BLACK, DOT_PIXEL_1X1, DOT_STYLE_DFT);
+//        bw_image[0] = 0x3f;
+//        bw_image[19] = 0x3f;
+//        bw_image[37] = 0x0;
+//        bw_image[74] = 0x0;
+//        bw_image[111] = 0x0;
+//        Paint_DrawPoint(50, 1, BLACK, DOT_PIXEL_1X1, DOT_STYLE_DFT);
 //        Paint_DrawPoint(10, 80, WHITE, DOT_PIXEL_1X1, DOT_STYLE_DFT);
 //        Paint_DrawPoint(10, 90, BLACK, DOT_PIXEL_2X2, DOT_STYLE_DFT);
 //        Paint_DrawPoint(10, 100, BLACK, DOT_PIXEL_3X3, DOT_STYLE_DFT);
-//
+////
 //        Paint_DrawLine(20, 70, 70, 120, BLACK, DOT_PIXEL_1X1, LINE_STYLE_SOLID);
 //        Paint_DrawLine(70, 70, 20, 120, BLACK, DOT_PIXEL_1X1, LINE_STYLE_SOLID);
 //
-        Paint_DrawRectangle(20, 70, 20, 100, BLACK, DOT_PIXEL_1X1, DRAW_FILL_EMPTY);
+//        Paint_DrawRectangle(20, 70, 20, 100, BLACK, DOT_PIXEL_1X1, DRAW_FILL_EMPTY);
 //        Paint_DrawRectangle(30, 70, 30, 100, BLACK, DOT_PIXEL_1X1, DRAW_FILL_FULL);
 //        Paint_DrawRectangle(80, 70, 81, 71, BLACK, DOT_PIXEL_1X1, DRAW_FILL_FULL);
 //
@@ -120,23 +120,23 @@ int main(){
 //        Paint_DrawLine(85, 95, 125, 95, BLACK, DOT_PIXEL_1X1, LINE_STYLE_DOTTED);
 //        Paint_DrawLine(105, 75, 105, 115, BLACK, DOT_PIXEL_1X1, LINE_STYLE_DOTTED);
 //
-//        Paint_DrawString_EN(10, 0, "waveshare", &Font16, BLACK, WHITE);
-//        Paint_DrawString_EN(10, 20, "hello world", &Font12, WHITE, BLACK);
-//
+        Paint_DrawString_EN(10, 0, "waveshare", &Font16, BLACK, WHITE);
+        Paint_DrawString_EN(10, 20, "hello world", &Font12, WHITE, BLACK);
+
 //        Paint_DrawNum(10, 33, 123456789, &Font12, BLACK, WHITE);
 //        Paint_DrawNum(10, 50, 987654321, &Font16, WHITE, BLACK);
 
-        EPD_2IN66_Display(BlankImage);
+        EPD_2IN66_Display(bw_image);
 #endif
 
 # if 0
-        Paint_SelectImage(BlankImage);
+        Paint_SelectImage(bw_image);
         Paint_Clear(WHITE);
 //        Paint_DrawBitMap(gImage_2in66);
 //        Paint_DrawBitMap_Paste(gImage_100X50, 10, 10, 100, 50, TRUE);
 //        Paint_DrawBitMap_Paste(tag_logo_100x100, 1, 1, 100, 100, FALSE);
         Paint_DrawBitMap_Paste(tag_logo_24x24, 1, 1, 24, 24, FALSE);
-        EPD_2IN66_Display(BlankImage);
+        EPD_2IN66_Display(bw_image);
         delay(2000);
 #endif
 
@@ -144,8 +144,8 @@ int main(){
 
 #if 0
         EPD_2IN66_Init_Partial();
-        Paint_SelectImage(BlackImage);
-
+        Paint_SelectImage(bw_image);
+        Paint_Clear(WHITE);
         PAINT_TIME sPaint_time;
         sPaint_time.Hour = 12;
         sPaint_time.Min = 34;
@@ -168,14 +168,15 @@ int main(){
                 }
             }
             Paint_ClearWindows(180, 100, 296, 152, WHITE);
-            Paint_DrawTime(180, 110, &sPaint_time, &Font20, WHITE, BLACK);
+//            Paint_Clear(WHITE);
+            Paint_DrawTime(180, 110, &sPaint_time, &Font20, BLACK, WHITE);
 
             num = num - 1;
             if (num == 0) {
                 break;
             }
-            EPD_2IN66_Display(BlackImage);
-            delay(500);
+            EPD_2IN66_Display(bw_image);
+            delay(1000);
         }
         EPD_2IN66_Clear();
 #endif
@@ -193,7 +194,7 @@ int main(){
         char jig_revision_label[] = "Jig Rev: 0.0";
         char product_name_label[] = "Product: O3-DIN-Modules";
         char instrument_id[] = "PD-396";
-        Paint_SelectImage(BlankImage);
+        Paint_SelectImage(bw_image);
         Paint_Clear(WHITE);
 
 
@@ -226,7 +227,7 @@ int main(){
         uint tag_message_start_position_x = (Paint.Width - strlen(tag_message) * Font12.Width) / 2;
 
         delay(200);
-        EPD_2IN66_Display(BlankImage);
+        EPD_2IN66_Display(bw_image);
 #endif
 #if 1
         EPD_2IN66_Display((uint8_t*)&label_image);
@@ -239,8 +240,8 @@ int main(){
 //        delay(5000);
         delay(3000);
         EPD_2IN66_Sleep();
-        free(BlankImage);
-        BlankImage = NULL;
+        free(bw_image);
+        bw_image = NULL;
 
 //        DEV_Module_Exit(); // calling this function seems to kill some pixels
     }
