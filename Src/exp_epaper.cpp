@@ -189,7 +189,7 @@ int main(){
         EPD_2IN66_Display(BlackImage);
 #endif
 
-#if 0
+#if 1
         char product_firmware_label[] = "Firmware: 4.11.293";
         char jig_revision_label[] = "Jig Rev: 0.0";
         char product_name_label[] = "Product: O3-DIN-Modules";
