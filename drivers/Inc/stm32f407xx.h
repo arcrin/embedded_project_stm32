@@ -30,7 +30,7 @@
 /*
  * NVIC registers
  */
-#define NVIC_ISER0      ((_vo uint32_t *)0xE000E100) // TODO: why are they pointers? because it is address of the retisger
+#define NVIC_ISER0      ((_vo uint32_t *)0xE000E100) // TODO: why are they pointers? because it is address of the register
 #define NVIC_ISER1      ((_vo uint32_t *)0xE000E104)
 #define NVIC_ISER2      ((_vo uint32_t *)0xE000E108)
 #define NVIC_ISER3      ((_vo uint32_t *)0xE000E10C)

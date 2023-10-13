@@ -45,7 +45,7 @@ set(PROJECT_FILES
 #        modules/epaper/Fonts/fonts.h
 #        modules/epaper/GUI/GUI_Paint.cpp
 #        modules/epaper/GUI/GUI_Paint.h
-        Src/exp_epaper.cpp
+        Src/exp1_toggle_push_pull_led.cpp
         stm32_startup.c
         )
 
